@@ -1,2 +1,0 @@
-# wm-ai-coding
-
