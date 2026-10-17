@@ -1,2 +1,2 @@
-# solution-ai-coding
+# wm-ai-coding
 
