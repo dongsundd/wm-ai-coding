@@ -1,0 +1,4 @@
+interface:
+  display_name: "HarmonyOS AI Coding"
+  short_description: "HarmonyOS 与 ArkTS 研发约束和验证"
+  default_prompt: "使用 $harmonyos-ai-coding 按项目 SDK 约束实现并验证这个 HarmonyOS 变更。"

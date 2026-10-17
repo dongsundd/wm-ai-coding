@@ -1,0 +1,26 @@
+{
+  "retrievedAt": "2026-10-10",
+  "sources": [
+    {
+      "name": "Superpowers",
+      "repository": "https://github.com/obra/superpowers",
+      "ref": "main",
+      "path": "skills",
+      "verbatimCopy": "third-party/upstream/superpowers/skills",
+      "licenseFile": "SUPERPOWERS-LICENSE",
+      "skillCount": 15,
+      "activeAdaptation": "The active brainstorming and writing-plans copies merge their outputs into each change's canonical design.md and tasks.md under the direct sdd/ root. All verbatim originals remain under verbatimCopy."
+    },
+    {
+      "name": "OpenSpec",
+      "repository": "https://github.com/Fission-AI/OpenSpec",
+      "ref": "main",
+      "path": "skills",
+      "verbatimCopy": "third-party/upstream/openspec/skills",
+      "licenseFile": "OPENSPEC-LICENSE",
+      "skillCount": 12,
+      "activeAdaptation": "Removed the unsupported frontmatter key compatibility and added a direct-root harness contract because the official CLI cannot target sdd/ directly. Active skills use official workflow semantics with harness-managed files; all originals remain under verbatimCopy."
+    }
+  ],
+  "policy": "Verbatim upstream trees are retained under third-party/upstream. Active compatibility edits are documented per source. Local orchestration lives only in skills/run-ai-coding-harness."
+}

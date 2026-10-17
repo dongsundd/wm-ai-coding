@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "codegraph": {
+      "command": "codegraph.cmd",
+      "args": ["serve", "--mcp"],
+      "env": {
+        "CODEGRAPH_MCP_TOOLS": "explore,node,search,callers,callees,impact,files,status"
+      }
+    },
+    "playwright": {
+      "command": "playwright-mcp.cmd",
+      "args": ["--isolated", "--headless", "--codegen=none", "--block-service-workers"]
+    }
+  }
+}

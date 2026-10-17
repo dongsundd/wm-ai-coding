@@ -1,0 +1,22 @@
+{
+  "name": "wm-ai-coding",
+  "version": "0.6.6",
+  "description": "集成 OpenSpec、Superpowers、CodeGraph 与 Playwright 的端到端 AI Coding harness",
+  "author": { "name": "WM AI Coding" },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "WM AI Coding Harness",
+    "shortDescription": "OpenSpec + Superpowers 端到端研发工作流",
+    "longDescription": "以 CodeGraph 驱动代码影响分析，以 Playwright MCP 驱动产品调研和浏览器验收，并通过统一 sdd/ 根串联规格、设计、TDD、审查、验证与交付。",
+    "developerName": "WM AI Coding",
+    "category": "Developer Tools",
+    "capabilities": ["Interactive", "Write", "Code Intelligence", "Browser Automation"],
+    "defaultPrompt": [
+      "用端到端 harness 实现这个需求。",
+      "从 OpenSpec 变更继续实施并验证。",
+      "检查当前变更是否满足交付门禁。",
+      "按项目技术栈 profile 连续执行全部开发任务并完成验证。"
+    ]
+  },
+  "mcpServers": "./.mcp.json"
+}
