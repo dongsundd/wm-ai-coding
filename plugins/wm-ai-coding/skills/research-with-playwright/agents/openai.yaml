@@ -1,4 +1,0 @@
-interface:
-  display_name: "Playwright Research"
-  short_description: "使用 Playwright MCP 调研并验证浏览器行为"
-  default_prompt: "使用 Playwright 调研这个需求涉及的用户流程"
