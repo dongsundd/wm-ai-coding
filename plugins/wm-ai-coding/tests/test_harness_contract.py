@@ -22,6 +22,7 @@ class HarnessContractTest(unittest.TestCase):
     INTERNAL_SUPPORT_SKILLS = (
         "analyze-codegraph-impact",
         "brainstorming",
+        "frontend-design",
         "harmonyos-ai-coding",
         "python-ai-coding",
         "research-with-playwright",
@@ -83,6 +84,18 @@ class HarnessContractTest(unittest.TestCase):
         self.assertIn("minimum independently acceptable loop", body)
         self.assertNotIn("Run `writing-plans`", body)
         self.assertNotIn("Use `executing-plans`", body)
+
+    def test_design_artifact_writers_preserve_owned_frontend_section(self) -> None:
+        required = "Preserve `## Frontend design` byte-for-byte"
+        for name in ("openspec-propose", "openspec-continue-change", "openspec-update-change"):
+            with self.subTest(skill=name):
+                self.assertIn(required, skill_text(name))
+
+        harness = skill_text("using-wm")
+        frontend = skill_text("frontend-design")
+        self.assertIn("OpenSpec writes the design skeleton first", harness)
+        self.assertIn("only writer for `## Frontend design`", frontend)
+        self.assertIn("never replace the whole `design.md` file", frontend)
 
     def test_old_harness_name_is_absent_from_plugin(self) -> None:
         offenders = []

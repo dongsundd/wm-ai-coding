@@ -41,7 +41,7 @@ Use `brainstorming` to clarify consequential requirements and compare credible a
 
 Before detailed design exits, use `analyze-codegraph-impact`. CodeGraph is the primary source for implementation paths, symbols, callers/callees, dependencies, blast radius, and related tests. Use targeted file or text inspection only for graph-opaque configuration, templates, generated names, reflection, runtime registration, migrations, or documentation, and record why.
 
-For browser-visible work, use `research-with-playwright` and separate observed behavior, inference, and desired behavior. Store only necessary screenshots, traces, and attachments under the active change.
+OpenSpec creates or updates the surrounding `design.md` structure first. When `frontend_surface_changed` is true, invoke `frontend-design` serially inside `specify` and complete `design.md#Frontend design` before approval and task decomposition. OpenSpec artifact writers preserve that owned section byte-for-byte on later edits; `frontend-design` modifies only that section and never replaces the document. This is a conditional substep, not another workflow state or entry. For browser-visible research, use `research-with-playwright` and separate observed behavior, inference, and desired behavior. Store only necessary screenshots, traces, and attachments under the active change.
 
 ## OpenSpec artifacts
 
@@ -70,4 +70,3 @@ Task completion requires its own acceptance evidence. When implementation reveal
 Verification includes specification compliance and code quality in one OpenSpec-owned gate. It requires fresh focused and broad tests, applicable static/build checks, task-state consistency, and a CodeGraph comparison of predicted and observed impact.
 
 Do not sync or archive merely because checkboxes are marked. Do not claim readiness when a required check was skipped. Sync durable specs before archival when deltas apply. Delivery actions remain subject to user authorization.
-

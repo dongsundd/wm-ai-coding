@@ -13,6 +13,12 @@ class WorkflowError(ValueError):
 
 
 @dataclass(frozen=True)
+class ConditionalSkill:
+    when: str
+    skill: str
+
+
+@dataclass(frozen=True)
 class WorkflowState:
     name: str
     skill: str
@@ -20,6 +26,7 @@ class WorkflowState:
     exit_gates: tuple[str, ...]
     terminal: bool = False
     repeat: str | None = None
+    conditional_skills: tuple[ConditionalSkill, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -62,12 +69,20 @@ def load_workflow(path: Path) -> Workflow:
         skill = config.get("skill")
         next_name = config.get("next")
         exit_gates = config.get("exit_gates", [])
+        conditional_data = config.get("conditional_skills", [])
         if not isinstance(skill, str):
             raise WorkflowError(f"state {name} has no skill")
         if next_name is not None and not isinstance(next_name, str):
             raise WorkflowError(f"state {name} has invalid next state")
         if not isinstance(exit_gates, list) or not all(item in gates for item in exit_gates):
             raise WorkflowError(f"state {name} has unknown exit gate")
+        if not isinstance(conditional_data, list):
+            raise WorkflowError(f"state {name} has invalid conditional skills")
+        conditional_skills: list[ConditionalSkill] = []
+        for item in conditional_data:
+            if not isinstance(item, dict) or not isinstance(item.get("when"), str) or not isinstance(item.get("skill"), str):
+                raise WorkflowError(f"state {name} has invalid conditional skill")
+            conditional_skills.append(ConditionalSkill(when=item["when"], skill=item["skill"]))
         states[name] = WorkflowState(
             name=name,
             skill=skill,
@@ -75,6 +90,7 @@ def load_workflow(path: Path) -> Workflow:
             exit_gates=tuple(exit_gates),
             terminal=bool(config.get("terminal", False)),
             repeat=config.get("repeat"),
+            conditional_skills=tuple(conditional_skills),
         )
     for state in states.values():
         if state.next is not None and state.next not in states:
@@ -90,4 +106,3 @@ def load_workflow(path: Path) -> Workflow:
         checksum=hashlib.sha256(raw).hexdigest(),
         path=path.resolve(),
     )
-

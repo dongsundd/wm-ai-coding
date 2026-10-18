@@ -16,6 +16,10 @@ class WorkflowTest(unittest.TestCase):
         self.assertEqual("clarify", workflow.initial)
         self.assertEqual("impact", workflow.next_state("clarify"))
         self.assertEqual("close", workflow.next_state("verify"))
+        self.assertEqual(
+            (("frontend_surface_changed", "frontend-design"),),
+            tuple((item.when, item.skill) for item in workflow.states["specify"].conditional_skills),
+        )
         self.assertTrue(workflow.states["close"].terminal)
         self.assertEqual(64, len(workflow.checksum))
 
@@ -37,4 +41,3 @@ states:
 
 if __name__ == "__main__":
     unittest.main()
-

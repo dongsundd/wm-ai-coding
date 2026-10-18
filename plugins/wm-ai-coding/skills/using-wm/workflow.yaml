@@ -21,6 +21,9 @@ states:
     exit_gates: [codegraph_impact]
   specify:
     skill: openspec-propose
+    conditional_skills:
+      - when: frontend_surface_changed
+        skill: frontend-design
     next: tasks
     exit_gates: [planning_artifacts, design_approved]
   tasks:
@@ -40,4 +43,3 @@ states:
     skill: openspec-archive-change
     terminal: true
     exit_gates: []
-

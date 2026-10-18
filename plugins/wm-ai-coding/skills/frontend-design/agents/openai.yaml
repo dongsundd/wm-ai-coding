@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Design"
+  short_description: "Design Web and app interfaces before task breakdown"
+  default_prompt: "Use $frontend-design to define the Web or app interface design before implementation tasks are created."

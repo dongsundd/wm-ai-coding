@@ -7,7 +7,7 @@ import yaml
 
 PLUGIN_ROOT = Path(__file__).resolve().parents[1]
 SKILLS_ROOT = PLUGIN_ROOT / "skills"
-PROFILES = ("harmonyos-ai-coding", "python-ai-coding", "rust-ai-coding", "web-ai-coding")
+PROFILES = ("harmonyos-ai-coding", "python-ai-coding", "rust-ai-coding")
 ALLOWED_FRONTMATTER = {"name", "description"}
 
 
@@ -45,12 +45,21 @@ class StackProfileContractTest(unittest.TestCase):
         self.assertIn("harmonyos-ai-coding", combined)
         self.assertIn("python-ai-coding", combined)
         self.assertIn("rust-ai-coding", combined)
-        self.assertIn("web-ai-coding", combined)
+        self.assertIn("frontend-design", combined)
+        self.assertIn("frontend_surface_changed", combined)
         self.assertIn("Web or app page", combined)
-        web_profile = (SKILLS_ROOT / "web-ai-coding" / "SKILL.md").read_text(encoding="utf-8")
-        self.assertIn("Web and app page design", web_profile)
-        self.assertIn("device, emulator, or platform preview", web_profile)
         self.assertIn("Do not pause between tasks", combined)
+
+    def test_frontend_design_is_a_design_stage_skill_not_an_implementation_profile(self) -> None:
+        metadata, body = read_skill("frontend-design")
+        self.assertEqual("frontend-design", metadata["name"])
+        self.assertTrue((SKILLS_ROOT / "frontend-design" / "agents" / "openai.yaml").is_file())
+        self.assertIn("`using-wm`", body)
+        self.assertIn("## Frontend design", body)
+        self.assertIn("Do not modify product code", body)
+        self.assertIn("before task decomposition", body)
+        self.assertNotIn("Implement faithfully", body)
+        self.assertFalse((SKILLS_ROOT / "web-ai-coding").exists())
 
 
 if __name__ == "__main__":
