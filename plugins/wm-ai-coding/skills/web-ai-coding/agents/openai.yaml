@@ -1,0 +1,4 @@
+interface:
+  display_name: "Web AI Coding"
+  short_description: "Web interface design and frontend implementation quality"
+  default_prompt: "Use $web-ai-coding to design, implement, and verify this web interface within the existing repository conventions."

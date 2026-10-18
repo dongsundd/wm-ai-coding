@@ -7,7 +7,7 @@ import yaml
 
 PLUGIN_ROOT = Path(__file__).resolve().parents[1]
 SKILLS_ROOT = PLUGIN_ROOT / "skills"
-PROFILES = ("harmonyos-ai-coding", "python-ai-coding", "rust-ai-coding")
+PROFILES = ("harmonyos-ai-coding", "python-ai-coding", "rust-ai-coding", "web-ai-coding")
 ALLOWED_FRONTMATTER = {"name", "description"}
 
 
@@ -45,6 +45,11 @@ class StackProfileContractTest(unittest.TestCase):
         self.assertIn("harmonyos-ai-coding", combined)
         self.assertIn("python-ai-coding", combined)
         self.assertIn("rust-ai-coding", combined)
+        self.assertIn("web-ai-coding", combined)
+        self.assertIn("Web or app page", combined)
+        web_profile = (SKILLS_ROOT / "web-ai-coding" / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("Web and app page design", web_profile)
+        self.assertIn("device, emulator, or platform preview", web_profile)
         self.assertIn("Do not pause between tasks", combined)
 
 

@@ -50,11 +50,13 @@ If a skill reports new scope or a failed gate, update the OpenSpec artifacts or 
 | Close | `openspec-sync-specs`, then archive skill | Durable specs synchronized and verified change archived |
 | Deliver | Harness-owned delivery | Final diff, risks, and only user-authorized integration actions |
 
-Use `research-with-playwright` only for browser-visible research or acceptance evidence. Load HarmonyOS, Python, or Rust profiles only when the CodeGraph impact scope touches that technology.
+Use `research-with-playwright` only for browser-visible research or acceptance evidence. Load HarmonyOS, Python, Rust, or Web profiles only when the CodeGraph impact scope touches that technology.
 
 ## Technology profile selection
 
-- Select `harmonyos-ai-coding`, `python-ai-coding`, and/or `rust-ai-coding` from repository evidence and the CodeGraph impact scope.
+- Select `harmonyos-ai-coding`, `python-ai-coding`, `rust-ai-coding`, and/or `web-ai-coding` from repository evidence and the CodeGraph impact scope.
+- Activate `web-ai-coding` whenever a requirement involves a Web or app page, screen, visible component, layout, interaction, responsive behavior, accessibility, or design system.
+- Combine it with the applicable platform Profile for app pages, such as `harmonyos-ai-coding`; use `research-with-playwright` for Web rendering and device, emulator, or platform preview evidence for native apps.
 - Record activated profiles and repository-defined commands in `design.md` and each affected task.
 - Profiles constrain a stage or task; they do not create another workflow or approval point.
 - Do not pause between tasks after approved execution begins. Record evidence and continue to the next ready task.
