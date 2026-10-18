@@ -33,13 +33,13 @@ class StackProfileContractTest(unittest.TestCase):
         for name in PROFILES:
             with self.subTest(profile=name):
                 _, body = read_skill(name)
-                self.assertIn("run-ai-coding-harness", body)
+                self.assertIn("using-wm", body)
                 self.assertIn("continuous execution", body)
                 self.assertIn("repository", body.lower())
 
     def test_harness_selects_and_records_profiles_without_task_pauses(self) -> None:
-        harness = (SKILLS_ROOT / "run-ai-coding-harness" / "SKILL.md").read_text(encoding="utf-8")
-        workflow = (SKILLS_ROOT / "run-ai-coding-harness" / "references" / "workflow.md").read_text(encoding="utf-8")
+        harness = (SKILLS_ROOT / "using-wm" / "SKILL.md").read_text(encoding="utf-8")
+        workflow = (SKILLS_ROOT / "using-wm" / "references" / "workflow.md").read_text(encoding="utf-8")
         combined = harness + "\n" + workflow
         self.assertIn("Technology profile selection", combined)
         self.assertIn("harmonyos-ai-coding", combined)

@@ -1,4 +1,0 @@
-interface:
-  display_name: "AI Coding Harness"
-  short_description: "用 OpenSpec 与 Superpowers 驱动端到端研发"
-  default_prompt: "使用端到端 harness 完成这个代码变更"

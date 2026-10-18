@@ -1,12 +1,16 @@
 ---
 name: openspec-archive-change
-description: Archive a completed OpenSpec change in the experimental workflow. Use when the user wants to finalize and archive a change after implementation is complete. Also use when the user says "openspec archive" or "opsx archive".
+description: Use only when `using-wm` selects the archive stage for a verified OpenSpec change.
 allowed-tools: Bash(openspec:*)
 license: MIT
 metadata:
   author: openspec
   version: "1.0"
 ---
+
+## Harness entry contract
+
+Execute only from a `using-wm` handoff that names the verified change and authorized archive scope. A direct user request must enter `using-wm`; do not start an independent workflow. Perform only this stage, then return control to `using-wm`.
 
 > **WM AI Coding direct-root contract (overrides path and CLI instructions below):** Use `<repo>/sdd/config.yaml`, `<repo>/sdd/specs/`, and `<repo>/sdd/changes/` directly. Do not run `openspec` CLI commands that read or mutate artifacts, because the official CLI requires an `openspec/` directory. Apply this skill's workflow semantics with repository file operations, and never create `openspec/` or `sdd/openspec/`.
 
@@ -42,7 +46,7 @@ In both branches, never create the root as a side effect: do not run `openspec i
    When prompting, show only active changes (not already archived).
    Include the schema used for each change if available.
 
-   Always announce: "Using change: <name>" and how to override (e.g., `/openspec-archive-change <other>`).
+   Announce: "Using change: <name>" and the verified archive scope selected by `using-wm`.
 
    **Load current archive inputs before the existing archive checks:**
 

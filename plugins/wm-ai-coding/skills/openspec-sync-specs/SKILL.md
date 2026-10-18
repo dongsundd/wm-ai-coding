@@ -1,12 +1,16 @@
 ---
 name: openspec-sync-specs
-description: Sync delta specs from an OpenSpec change to main specs. Use when the user wants to update main specs with changes from a delta spec, without archiving the change. Also use when the user says "openspec sync" or "opsx sync".
+description: Use only when `using-wm` selects specification synchronization for a verified OpenSpec change.
 allowed-tools: Bash(openspec:*)
 license: MIT
 metadata:
   author: openspec
   version: "1.0"
 ---
+
+## Harness entry contract
+
+Execute only from a `using-wm` handoff that names the verified change and exact delta scope. A direct user request must enter `using-wm`; do not start an independent workflow. Perform only synchronization, then return control to `using-wm`.
 
 > **WM AI Coding direct-root contract (overrides path and CLI instructions below):** Use `<repo>/sdd/config.yaml`, `<repo>/sdd/specs/`, and `<repo>/sdd/changes/` directly. Do not run `openspec` CLI commands that read or mutate artifacts, because the official CLI requires an `openspec/` directory. Apply this skill's workflow semantics with repository file operations, and never create `openspec/` or `sdd/openspec/`.
 
@@ -43,7 +47,7 @@ In both branches, never create the root as a side effect: do not run `openspec i
 
    When prompting, show changes that have delta specs (under `specs/` directory).
 
-   Always announce: "Using change: <name>" and how to override (e.g., `/openspec-sync-specs <other>`).
+   Announce: "Using change: <name>" and the delta scope selected by `using-wm`.
 
 2. **Resolve change context**
 

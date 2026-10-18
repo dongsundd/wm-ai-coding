@@ -1,7 +1,11 @@
 ---
 name: using-git-worktrees
-description: Use when starting feature work that needs isolation from current workspace or before executing implementation plans - ensures an isolated workspace exists via native tools or git worktree fallback
+description: Use only when `using-wm` selects workspace isolation before applying an OpenSpec change.
 ---
+
+## Harness entry contract
+
+Execute only from a `using-wm` handoff that names the repository, change, and authorized isolation scope. A direct user request must enter `using-wm`. Prepare or verify isolation, then return control to `using-wm`.
 
 # Using Git Worktrees
 

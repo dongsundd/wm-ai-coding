@@ -1,0 +1,43 @@
+schema_version: 1
+name: using-wm
+initial: clarify
+gates:
+  - design_approved
+  - codegraph_impact
+  - planning_artifacts
+  - task_contract
+  - task_baseline
+  - all_tasks_complete
+  - verification
+  - codegraph_recheck
+states:
+  clarify:
+    skill: brainstorming
+    next: impact
+    exit_gates: []
+  impact:
+    skill: analyze-codegraph-impact
+    next: specify
+    exit_gates: [codegraph_impact]
+  specify:
+    skill: openspec-propose
+    next: tasks
+    exit_gates: [planning_artifacts, design_approved]
+  tasks:
+    skill: openspec-continue-change
+    next: apply
+    exit_gates: [task_contract, task_baseline]
+  apply:
+    skill: openspec-apply-change
+    next: verify
+    repeat: per_task
+    exit_gates: [all_tasks_complete]
+  verify:
+    skill: openspec-verify-change
+    next: close
+    exit_gates: [verification, codegraph_recheck]
+  close:
+    skill: openspec-archive-change
+    terminal: true
+    exit_gates: []
+

@@ -1,12 +1,16 @@
 ---
 name: openspec-apply-change
-description: Implement tasks from an OpenSpec change. Use when the user wants to start implementing, continue implementation, or work through tasks. Also use when the user says "openspec apply", "opsx apply", or "openspec implement".
+description: Use only when `using-wm` selects the apply stage for an OpenSpec change with valid design and task gates.
 allowed-tools: Bash(openspec:*)
 license: MIT
 metadata:
   author: openspec
   version: "1.0"
 ---
+
+## Harness entry contract
+
+Execute only from a `using-wm` handoff that names the change, stage, satisfied gates, and task scope. A direct user request must enter `using-wm`; do not start an independent workflow. Perform only this stage, then return control to `using-wm`.
 
 > **WM AI Coding direct-root contract (overrides path and CLI instructions below):** Use `<repo>/sdd/config.yaml`, `<repo>/sdd/specs/`, and `<repo>/sdd/changes/` directly. Do not run `openspec` CLI commands that read or mutate artifacts, because the official CLI requires an `openspec/` directory. Apply this skill's workflow semantics with repository file operations, and never create `openspec/` or `sdd/openspec/`.
 
@@ -26,7 +30,7 @@ Otherwise, with no root, what happens next depends on how this workflow was reac
 
 In both branches, never create the root as a side effect: do not run `openspec init` until the user asks for it, do not hand-create `openspec/` files, and do not let a command create it.
 
-**Input**: Optionally specify a change name (e.g., `/openspec-apply-change add-auth`). If omitted, check if it can be inferred from conversation context. If vague or ambiguous you MUST prompt for available changes.
+**Input**: Use the change name and task scope supplied by the `using-wm` handoff. If either is missing or ambiguous, return a blocked result to the harness.
 
 **Steps**
 
@@ -37,7 +41,7 @@ In both branches, never create the root as a side effect: do not run `openspec i
    - Auto-select if only one active change exists
    - If ambiguous, run `openspec list --json` to get available changes and ask the user to select one
 
-   Always announce: "Using change: <name>" and how to override (e.g., `/openspec-apply-change <other>`).
+   Announce: "Using change: <name>" and the task scope selected by `using-wm`.
 
 2. **Check status to understand the schema**
    ```bash
@@ -65,7 +69,7 @@ In both branches, never create the root as a side effect: do not run `openspec i
 
    **Handle states:**
    - If `state: "blocked"`: show the message and pause implementation.
-     - If `missingArtifacts` is non-empty: suggest using `/openspec-continue-change` to create them.
+     - If `missingArtifacts` is non-empty: return the missing-artifact gate to `using-wm`.
      - Otherwise, follow the CLI instruction to create or repair the schema-configured tracking file from existing planning artifacts. Do not assume another artifact is ready or start implementation while blocked.
    - If `state: "all_done"`: report that all tracked tasks are complete and suggest review or verification as appropriate before archiving
    - Otherwise: proceed to implementation
@@ -158,7 +162,7 @@ Working on task 4/7: <task description>
 ...
 
 All tracked tasks are complete. Review or verify the change as appropriate
-before archiving. You can archive this change with `/openspec-archive-change`.
+before archiving. Return control to `using-wm` for verification and closure routing.
 ```
 
 **Output On Pause (Issue Encountered)**
@@ -203,5 +207,5 @@ What would you like to do?
 
 This skill supports the "actions on a change" model:
 
-- **Can be invoked anytime**: Before all artifacts are done (if tasks exist), after partial implementation, interleaved with other actions
+- **Harness-routed only**: Invoke only after `using-wm` confirms the design and task gates; partial progress does not permit bypassing those gates.
 - **Allows artifact updates**: If implementation reveals design issues, suggest updating artifacts - not phase-locked, work fluidly

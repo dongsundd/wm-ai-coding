@@ -1,12 +1,16 @@
 ---
 name: openspec-verify-change
-description: Verify implementation matches OpenSpec change artifacts. Use when the user wants to validate that implementation is complete, correct, and coherent before archiving. Also use when the user says "openspec verify" or "opsx verify".
+description: Use only when `using-wm` selects verification of an implemented OpenSpec change.
 allowed-tools: Bash(openspec:*)
 license: MIT
 metadata:
   author: openspec
   version: "1.0"
 ---
+
+## Harness entry contract
+
+Execute only from a `using-wm` handoff that names the change, completed task scope, and required checks. A direct user request must enter `using-wm`; do not start an independent workflow. Record verification evidence, then return control to `using-wm`.
 
 > **WM AI Coding direct-root contract (overrides path and CLI instructions below):** Use `<repo>/sdd/config.yaml`, `<repo>/sdd/specs/`, and `<repo>/sdd/changes/` directly. Do not run `openspec` CLI commands that read or mutate artifacts, because the official CLI requires an `openspec/` directory. Apply this skill's workflow semantics with repository file operations, and never create `openspec/` or `sdd/openspec/`.
 
@@ -41,7 +45,7 @@ In both branches, never create the root as a side effect: do not run `openspec i
    Include the schema used for each change if available.
    Mark changes with incomplete tasks as "(In Progress)".
 
-   Always announce: "Using change: <name>" and how to override (e.g., `/openspec-verify-change <other>`).
+   Announce: "Using change: <name>" and the checks selected by `using-wm`.
 
 2. **Check status to understand the schema**
    ```bash

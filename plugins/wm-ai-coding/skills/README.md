@@ -1,19 +1,8 @@
-# OpenSpec skills for skills.sh
+# WM AI Coding skills
 
-Install the OpenSpec workflow skills into any [skills.sh](https://skills.sh)-compatible agent:
+`using-wm` is the plugin's only user-facing development workflow entry.
 
-```bash
-npx skills add Fission-AI/OpenSpec
-```
+The other skill directories remain independent modules for OpenSpec lifecycle stages, CodeGraph analysis, brainstorming, browser research, technology profiles, TDD, debugging, and optional workspace isolation. They execute only from a `using-wm` handoff and return control to the harness when their assigned stage is complete.
 
-Each `openspec-*/SKILL.md` here is the same skill `openspec init` writes into a
-project. The skills drive the `openspec` CLI, so for the full setup (CLI +
-`openspec/` project scaffolding + slash commands) run:
+Do not invoke an `openspec-*` or supporting skill as a parallel workflow. Direct requests for propose, update, apply, verify, sync, archive, or bulk archive enter `using-wm`, which checks the active change and earliest incomplete gate before routing the operation.
 
-```bash
-npx openspec@latest init
-```
-
-> These files are generated from the skill templates — do not edit by hand. Run
-> `pnpm build && pnpm generate:skills` after changing a template;
-> `skillssh-parity.test.ts` fails if they drift.

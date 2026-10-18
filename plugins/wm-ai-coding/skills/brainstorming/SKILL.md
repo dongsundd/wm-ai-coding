@@ -1,7 +1,11 @@
 ---
 name: brainstorming
-description: "You MUST use this before any creative work - creating features, building components, adding functionality, modifying behavior, or planning anything new, in software or out of it (a talk, a business, a renovation)."
+description: Use only when `using-wm` selects requirement clarification or design exploration for an OpenSpec change.
 ---
+
+## Harness entry contract
+
+Execute only from a `using-wm` handoff that names the clarification scope and artifact target. A direct development request must enter `using-wm`. Produce the approved design input, then return control to `using-wm`.
 
 # Brainstorming
 
@@ -135,7 +139,7 @@ words. They can override it.
 |------|----------------------|------|
 | A quick, clear task | the request itself | do it |
 | A small change | in chat | build it through the normal workflow |
-| A project with a written design | a written design document | a full plan (for software: superpowers:writing-plans) |
+| A project with a written design | the active OpenSpec `design.md` | return it to `using-wm` for task creation |
 
 If it grows mid-task, stop, say so, and step up a size.
 
@@ -188,8 +192,9 @@ and the gate goes with it. A spike they said yes to may be built; it
 stays labeled throwaway, and keeping what it produced is a new request
 that comes back through this gate.
 
-After a project's document is approved, the next step is the plan. For
-software, invoke superpowers:writing-plans and no other skill.
+After a project's document is approved, return control to `using-wm`.
+The harness creates the single OpenSpec `tasks.md`; do not invoke a
+second planning workflow.
 </HARD-GATE>
 
 ## Red Flags

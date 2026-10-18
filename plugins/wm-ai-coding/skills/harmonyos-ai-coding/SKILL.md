@@ -1,11 +1,15 @@
 ---
 name: harmonyos-ai-coding
-description: Use when a change touches HarmonyOS or OpenHarmony projects, ArkTS `.ets` files, ArkUI components, hvigor builds, application routing, permissions, state management, or platform SDK APIs.
+description: Use only when `using-wm` selects the HarmonyOS profile for an affected OpenSpec stage or task.
 ---
+
+## Harness entry contract
+
+Execute only from a `using-wm` handoff whose CodeGraph scope activates HarmonyOS. A direct user request must enter `using-wm`. Apply this profile only to the assigned stage or task, then return control to `using-wm`.
 
 # HarmonyOS AI Coding
 
-Apply HarmonyOS and ArkTS constraints as a technology profile inside `run-ai-coding-harness`. This is an implementation overlay, not an independent workflow: OpenSpec, CodeGraph, TDD, review, and delivery remain owned by the harness.
+Apply HarmonyOS and ArkTS constraints as a technology profile inside `using-wm`. This is an implementation overlay, not an independent workflow: OpenSpec, CodeGraph, TDD, review, and delivery remain owned by the harness.
 
 ## Select the profile
 

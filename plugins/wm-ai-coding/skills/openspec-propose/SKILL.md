@@ -1,12 +1,16 @@
 ---
 name: openspec-propose
-description: Propose a new OpenSpec change with all artifacts generated in one step. Use when the user wants to quickly describe what they want to build and get a complete proposal with design, specs, and tasks ready for implementation. Also use when the user says "openspec propose" or "opsx propose".
+description: Use only when `using-wm` selects generation of approved OpenSpec planning artifacts for a change.
 allowed-tools: Bash(openspec:*)
 license: MIT
 metadata:
   author: openspec
   version: "1.0"
 ---
+
+## Harness entry contract
+
+Execute only from a `using-wm` handoff that names the change, approved design direction, CodeGraph evidence, and artifact scope. A direct user request must enter `using-wm`; do not start an independent workflow. Generate only the assigned artifacts, then return control to `using-wm`.
 
 > **WM AI Coding direct-root contract (overrides path and CLI instructions below):** Use `<repo>/sdd/config.yaml`, `<repo>/sdd/specs/`, and `<repo>/sdd/changes/` directly. Do not run `openspec` CLI commands that read or mutate artifacts, because the official CLI requires an `openspec/` directory. Apply this skill's workflow semantics with repository file operations, and never create `openspec/` or `sdd/openspec/`.
 
@@ -153,7 +157,7 @@ After completing all artifacts, summarize:
 - Change name and location
 - List of artifacts created with brief descriptions, plus any conditional artifact you skipped and why
 - What's ready: "All artifacts needed for implementation are ready."
-- Prompt: "The artifacts are ready for review. When you are ready, run `/openspec-apply-change` or ask me to apply this change."
+- Return the completed artifacts to `using-wm`; the harness owns review approval and apply routing.
 
 **Artifact Creation Guidelines**
 

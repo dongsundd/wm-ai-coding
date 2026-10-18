@@ -1,7 +1,11 @@
 ---
 name: analyze-codegraph-impact
-description: Analyze an existing repository with CodeGraph before designing or changing code. Use when clarifying a feature or bug, locating implementation entry points, assessing blast radius, identifying callers, dependencies and related tests, preparing an SDD design, reviewing scope drift, or verifying that a change did not miss structurally affected code.
+description: Use only when `using-wm` selects CodeGraph impact analysis or post-implementation impact recheck for an OpenSpec change.
 ---
+
+## Harness entry contract
+
+Execute only from a `using-wm` handoff that names the change and analysis stage. A direct user request must enter `using-wm`. Record the assigned evidence, then return control to `using-wm`.
 
 # Analyze CodeGraph Impact
 

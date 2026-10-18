@@ -1,12 +1,16 @@
 ---
 name: openspec-continue-change
-description: Continue working on an OpenSpec change by creating the next artifact. Use when the user wants to progress their change, create the next artifact, or continue their workflow. Also use when the user says "openspec continue" or "opsx continue".
+description: Use only when `using-wm` selects creation of the next legal OpenSpec artifact for a change.
 allowed-tools: Bash(openspec:*)
 license: MIT
 metadata:
   author: openspec
   version: "1.0"
 ---
+
+## Harness entry contract
+
+Execute only from a `using-wm` handoff that names the change, next legal artifact, and satisfied dependencies. A direct user request must enter `using-wm`; do not start an independent workflow. Create only that artifact, then return control to `using-wm`.
 
 > **WM AI Coding direct-root contract (overrides path and CLI instructions below):** Use `<repo>/sdd/config.yaml`, `<repo>/sdd/specs/`, and `<repo>/sdd/changes/` directly. Do not run `openspec` CLI commands that read or mutate artifacts, because the official CLI requires an `openspec/` directory. Apply this skill's workflow semantics with repository file operations, and never create `openspec/` or `sdd/openspec/`.
 
@@ -44,7 +48,7 @@ In both branches, never create the root as a side effect: do not run `openspec i
 
    Mark the most recently modified change as "(Recommended)" since it's likely what the user wants to continue.
 
-   Always announce: "Using change: <name>" and how to override (e.g., `/openspec-continue-change <other>`).
+   Announce: "Using change: <name>" and the artifact selected by `using-wm`.
 
 2. **Check current status**
    ```bash

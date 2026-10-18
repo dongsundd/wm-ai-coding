@@ -1,11 +1,15 @@
 ---
 name: python-ai-coding
-description: Use when a change touches Python `.py` files, Python packages or services, `pyproject.toml`, dependency lock files, typing, async code, validation, HTTP clients, persistence, testing, linting, or packaging.
+description: Use only when `using-wm` selects the Python profile for an affected OpenSpec stage or task.
 ---
+
+## Harness entry contract
+
+Execute only from a `using-wm` handoff whose CodeGraph scope activates Python. A direct user request must enter `using-wm`. Apply this profile only to the assigned stage or task, then return control to `using-wm`.
 
 # Python AI Coding
 
-Apply Python constraints as a technology profile inside `run-ai-coding-harness`. This profile supplements OpenSpec, CodeGraph, TDD, review, and delivery; it does not create a separate workflow.
+Apply Python constraints as a technology profile inside `using-wm`. This profile supplements OpenSpec, CodeGraph, TDD, review, and delivery; it does not create a separate workflow.
 
 ## Select the profile
 

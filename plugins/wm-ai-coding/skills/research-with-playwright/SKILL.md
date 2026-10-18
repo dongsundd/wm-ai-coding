@@ -1,7 +1,11 @@
 ---
 name: research-with-playwright
-description: Research and verify browser-visible product behavior with Playwright MCP. Use when an SDD change involves a web UI, user journey, form, navigation, authentication, permissions, responsive behavior, browser-only bug, reference website, competitive research, accessibility behavior, or end-to-end acceptance scenario.
+description: Use only when `using-wm` selects browser-visible research or acceptance evidence for an OpenSpec change.
 ---
+
+## Harness entry contract
+
+Execute only from a `using-wm` handoff that names the change, browser scope, and research or verification stage. A direct user request must enter `using-wm`. Record only the assigned evidence, then return control to `using-wm`.
 
 # Research With Playwright
 

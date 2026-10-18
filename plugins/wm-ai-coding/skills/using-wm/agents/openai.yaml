@@ -1,0 +1,4 @@
+interface:
+  display_name: "Using WM"
+  short_description: "OpenSpec 驱动的唯一研发流程入口"
+  default_prompt: "使用 using-wm 完整处理并验证这个代码变更"

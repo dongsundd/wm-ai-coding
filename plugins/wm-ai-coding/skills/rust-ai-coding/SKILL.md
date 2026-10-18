@@ -1,11 +1,15 @@
 ---
 name: rust-ai-coding
-description: Use when a change touches Rust `.rs` files, Cargo manifests or lockfiles, crates, ownership or lifetime behavior, async Rust, error types, unsafe code, FFI, axum, sqlx, database transactions, testing, linting, or packaging.
+description: Use only when `using-wm` selects the Rust profile for an affected OpenSpec stage or task.
 ---
+
+## Harness entry contract
+
+Execute only from a `using-wm` handoff whose CodeGraph scope activates Rust. A direct user request must enter `using-wm`. Apply this profile only to the assigned stage or task, then return control to `using-wm`.
 
 # Rust AI Coding
 
-Apply Rust constraints as a technology profile inside `run-ai-coding-harness`. This profile adds stack-specific design, implementation, review, and verification gates without replacing the harness workflow.
+Apply Rust constraints as a technology profile inside `using-wm`. This profile adds stack-specific design, implementation, review, and verification gates without replacing the harness workflow.
 
 ## Select the profile
 

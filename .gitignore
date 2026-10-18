@@ -1,0 +1,20 @@
+# BEGIN WM AI CODING
+.wm/
+
+# Keep only durable archived SDD artifacts in version control.
+/sdd/changes/*
+!/sdd/changes/archive/
+!/sdd/changes/archive/**/
+!/sdd/changes/archive/**/*
+/sdd/changes/archive/**/tasks.md
+/sdd/changes/archive/**/verification.md
+# END WM AI CODING
+/.idea
+/.codegraph
+/.worktrees
+/sdd/changes/*
+!/sdd/changes/archive/
+!/sdd/changes/archive//
+!/sdd/changes/archive//*
+/sdd/changes/archive//tasks.md
+/sdd/changes/archive//verification.md
