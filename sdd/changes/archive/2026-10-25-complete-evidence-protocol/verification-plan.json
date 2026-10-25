@@ -1,0 +1,338 @@
+{
+  "checks": [
+    {
+      "id": "task-1",
+      "task": "task-1",
+      "kind": "test",
+      "argv": [
+        "D:\\Program\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "plugins/wm-ai-coding/tests",
+        "-p",
+        "test_protocol.py",
+        "-k",
+        "RouteTests"
+      ],
+      "requirements": [
+        "runtime::R1"
+      ],
+      "scenarios": [
+        "runtime::R1::contract-1"
+      ]
+    },
+    {
+      "id": "task-2",
+      "task": "task-2",
+      "kind": "test",
+      "argv": [
+        "D:\\Program\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "plugins/wm-ai-coding/tests",
+        "-p",
+        "test_protocol.py",
+        "-k",
+        "TaskTests"
+      ],
+      "requirements": [
+        "runtime::R2"
+      ],
+      "scenarios": [
+        "runtime::R2::contract-2"
+      ]
+    },
+    {
+      "id": "task-3",
+      "task": "task-3",
+      "kind": "test",
+      "argv": [
+        "D:\\Program\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "plugins/wm-ai-coding/tests",
+        "-p",
+        "test_protocol.py",
+        "-k",
+        "IntegrityTests"
+      ],
+      "requirements": [
+        "runtime::R3"
+      ],
+      "scenarios": [
+        "runtime::R3::contract-3"
+      ]
+    },
+    {
+      "id": "task-4",
+      "task": "task-4",
+      "kind": "test",
+      "argv": [
+        "D:\\Program\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "plugins/wm-ai-coding/tests",
+        "-p",
+        "test_protocol.py",
+        "-k",
+        "IdentityTests"
+      ],
+      "requirements": [
+        "runtime::R4"
+      ],
+      "scenarios": [
+        "runtime::R4::contract-4"
+      ]
+    },
+    {
+      "id": "task-5",
+      "task": "task-5",
+      "kind": "test",
+      "argv": [
+        "D:\\Program\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "plugins/wm-ai-coding/tests",
+        "-p",
+        "test_protocol.py",
+        "-k",
+        "HookTests"
+      ],
+      "requirements": [
+        "runtime::R5"
+      ],
+      "scenarios": [
+        "runtime::R5::contract-5"
+      ]
+    },
+    {
+      "id": "task-6",
+      "task": "task-6",
+      "kind": "test",
+      "argv": [
+        "D:\\Program\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "plugins/wm-ai-coding/tests",
+        "-p",
+        "test_protocol.py",
+        "-k",
+        "SyncTests"
+      ],
+      "requirements": [
+        "runtime::R6"
+      ],
+      "scenarios": [
+        "runtime::R6::contract-6"
+      ]
+    },
+    {
+      "id": "task-7",
+      "task": "task-7",
+      "kind": "test",
+      "argv": [
+        "D:\\Program\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "plugins/wm-ai-coding/tests",
+        "-p",
+        "test_protocol.py",
+        "-k",
+        "ReviewTests"
+      ],
+      "requirements": [
+        "runtime::R7"
+      ],
+      "scenarios": [
+        "runtime::R7::contract-7"
+      ]
+    },
+    {
+      "id": "task-8",
+      "task": "task-8",
+      "kind": "test",
+      "argv": [
+        "D:\\Program\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "plugins/wm-ai-coding/tests",
+        "-p",
+        "test_protocol.py",
+        "-k",
+        "EvalTests"
+      ],
+      "requirements": [
+        "runtime::R8"
+      ],
+      "scenarios": [
+        "runtime::R8::contract-8"
+      ]
+    },
+    {
+      "id": "task-9",
+      "task": "task-9",
+      "kind": "test",
+      "argv": [
+        "D:\\Program\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "plugins/wm-ai-coding/tests",
+        "-p",
+        "test_protocol.py",
+        "-k",
+        "DiagnosticTests"
+      ],
+      "requirements": [
+        "runtime::R9"
+      ],
+      "scenarios": [
+        "runtime::R9::contract-9"
+      ]
+    },
+    {
+      "id": "task-10",
+      "task": "task-10",
+      "kind": "test",
+      "argv": [
+        "D:\\Program\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "plugins/wm-ai-coding/tests",
+        "-p",
+        "test_protocol.py",
+        "-k",
+        "BatchTests"
+      ],
+      "requirements": [
+        "runtime::R10"
+      ],
+      "scenarios": [
+        "runtime::R10::contract-10"
+      ]
+    },
+    {
+      "id": "full-suite",
+      "kind": "test",
+      "argv": [
+        "D:\\Program\\Python\\Python312\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "plugins/wm-ai-coding/tests"
+      ],
+      "requirements": [],
+      "scenarios": []
+    },
+    {
+      "id": "compile",
+      "kind": "test",
+      "argv": [
+        "D:\\Program\\Python\\Python312\\python.exe",
+        "-m",
+        "compileall",
+        "-q",
+        "plugins/wm-ai-coding/scripts"
+      ],
+      "requirements": [],
+      "scenarios": []
+    },
+    {
+      "id": "release-mcp",
+      "kind": "test",
+      "argv": [
+        "D:\\Program\\Python\\Python312\\python.exe",
+        "plugins/wm-ai-coding/scripts/smoke_release.py",
+        "--mcp"
+      ],
+      "requirements": [],
+      "scenarios": []
+    },
+    {
+      "id": "claude-manifest",
+      "kind": "test",
+      "argv": [
+        "D:\\ProgramData\\nodejs\\claude.cmd",
+        "plugin",
+        "validate",
+        "plugins/wm-ai-coding",
+        "--json",
+        "--strict"
+      ],
+      "requirements": [],
+      "scenarios": []
+    },
+    {
+      "id": "wheel-build",
+      "kind": "build",
+      "argv": [
+        "D:\\Program\\Python\\Python312\\python.exe",
+        "-m",
+        "pip",
+        "wheel",
+        "--no-deps",
+        "--no-build-isolation",
+        "plugins/wm-ai-coding",
+        "--wheel-dir",
+        ".wm/build"
+      ],
+      "requirements": [],
+      "scenarios": []
+    },
+    {
+      "id": "wheel-install",
+      "kind": "build",
+      "argv": [
+        "D:\\Program\\Python\\Python312\\python.exe",
+        "plugins/wm-ai-coding/scripts/smoke_wheel.py",
+        ".wm/build/wm_ai_coding_runtime-0.8.0-py3-none-any.whl"
+      ],
+      "requirements": [],
+      "scenarios": []
+    },
+    {
+      "id": "protocol-eval",
+      "kind": "test",
+      "argv": [
+        "D:\\Program\\Python\\Python312\\python.exe",
+        "plugins/wm-ai-coding/skills/using-wm/scripts/harness_state.py",
+        "--repo",
+        ".",
+        "eval"
+      ],
+      "requirements": [],
+      "scenarios": []
+    },
+    {
+      "id": "diff-check",
+      "kind": "test",
+      "argv": [
+        "D:\\Program Files\\Git\\cmd\\git.EXE",
+        "diff",
+        "--check"
+      ],
+      "requirements": [],
+      "scenarios": []
+    }
+  ]
+}

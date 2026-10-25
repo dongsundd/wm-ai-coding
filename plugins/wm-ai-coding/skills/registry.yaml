@@ -1,0 +1,21 @@
+schema_version: 1
+skills:
+  using-wm: {role: controller, stages: [clarify, specify, tasks, apply, verify, close, archive]}
+  brainstorming: {role: stage, stages: [clarify]}
+  openspec-propose: {role: stage, stages: [specify]}
+  openspec-continue-change: {role: stage, stages: [tasks]}
+  openspec-apply-change: {role: stage, stages: [apply]}
+  openspec-verify-change: {role: stage, stages: [verify]}
+  openspec-sync-specs: {role: stage, stages: [close]}
+  openspec-archive-change: {role: stage, stages: [archive]}
+  frontend-design: {role: stage, stages: [specify]}
+  openspec-new-change: {role: operation, stages: [clarify]}
+  openspec-update-change: {role: operation, stages: [clarify, specify, tasks]}
+  openspec-bulk-archive-change: {role: operation, stages: [archive]}
+  test-driven-development: {role: support, stages: [apply]}
+  systematic-debugging: {role: support, stages: [apply, verify]}
+  using-git-worktrees: {role: support, stages: [clarify, specify, tasks, apply]}
+  research-with-playwright: {role: support, stages: [clarify, specify, apply, verify]}
+  python-ai-coding: {role: profile, stages: [clarify, specify, tasks, apply, verify]}
+  rust-ai-coding: {role: profile, stages: [clarify, specify, tasks, apply, verify]}
+  harmonyos-ai-coding: {role: profile, stages: [clarify, specify, tasks, apply, verify]}

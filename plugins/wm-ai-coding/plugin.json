@@ -1,0 +1,30 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "wm-ai-coding",
+  "version": "0.8.0",
+  "description": "以 OpenSpec 为核心，集成 CodeGraph、头脑风暴与可验证交付的端到端 AI Coding Harness",
+  "extensions": {
+    "com.openai": {
+      "hooks": "./hooks/codex.json",
+      "interface": {
+        "displayName": "WM AI Coding Harness",
+        "shortDescription": "OpenSpec 驱动的端到端研发工作流",
+        "longDescription": "通过 using-wm 单一入口编排独立技能，以 OpenSpec 管理需求、设计、任务、实施、验证和归档，并可借助 CodeGraph 辅助设计与影响分析。",
+        "developerName": "WM AI Coding",
+        "category": "Developer Tools",
+        "capabilities": [
+          "Interactive",
+          "Write",
+          "Code Intelligence",
+          "Browser Automation"
+        ],
+        "defaultPrompt": [
+          "使用 using-wm 完整实施并验证这个需求。",
+          "通过 using-wm 继续当前 OpenSpec 变更。",
+          "使用 using-wm 检查当前变更是否满足交付门禁。",
+          "使用 using-wm 按最小独立验收任务持续执行到验证完成。"
+        ]
+      }
+    }
+  }
+}

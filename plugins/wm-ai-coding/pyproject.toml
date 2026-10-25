@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "wm-ai-coding-runtime"
-version = "0.1.0"
+version = "0.8.0"
 description = "State-driven runtime for the WM AI Coding Harness"
 requires-python = ">=3.11"
 dependencies = ["PyYAML>=6.0"]
@@ -20,4 +20,4 @@ where = ["scripts"]
 include = ["wm_ai_coding*"]
 
 [tool.setuptools.data-files]
-"share/wm-ai-coding" = ["skills/using-wm/workflow.yaml"]
+"share/wm-ai-coding" = ["skills/using-wm/workflow.yaml", "skills/registry.yaml"]

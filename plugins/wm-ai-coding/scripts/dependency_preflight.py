@@ -12,8 +12,8 @@ from pathlib import Path
 
 
 DEPENDENCIES = (
-    ("codegraph", "codegraph.cmd", "@colbymchenry/codegraph"),
-    ("playwright", "playwright-mcp.cmd", "@playwright/mcp@0.0.83"),
+    ("codegraph", "codegraph", "@colbymchenry/codegraph"),
+    ("playwright", "playwright-mcp", "@playwright/mcp@0.0.83"),
 )
 
 
@@ -25,13 +25,13 @@ class Check:
 
 
 def locate(name: str) -> Check:
-    path = shutil.which(name)
+    path = (shutil.which(name) or shutil.which(name + ".cmd"))
     return Check(name, path is not None, path or "not found on PATH")
 
 
 def probe(name: str) -> Check:
     """Require the command to exist and start successfully, not merely be on PATH."""
-    path = shutil.which(name)
+    path = (shutil.which(name) or shutil.which(name + ".cmd"))
     if not path:
         return Check(name, False, "not found on PATH")
     try:
@@ -48,7 +48,7 @@ def probe(name: str) -> Check:
 
 
 def version(name: str) -> Check:
-    path = shutil.which(name)
+    path = (shutil.which(name) or shutil.which(name + ".cmd"))
     if not path:
         return Check(name, False, "not found on PATH")
     try:
@@ -125,8 +125,8 @@ def main() -> int:
     init_result: Check | None = None
     if args.project:
         project = args.project.resolve()
-        codegraph = shutil.which("codegraph.cmd")
-        if codegraph and next(check for check in after if check.name == "codegraph.cmd").available:
+        codegraph = (shutil.which("codegraph") or shutil.which("codegraph.cmd"))
+        if codegraph and next(check for check in after if check.name == "codegraph").available:
             project_result, init_result = project_index(codegraph, project, args.init_project)
         else:
             project_result = Check("codegraph-index", False, "CodeGraph CLI is unavailable")

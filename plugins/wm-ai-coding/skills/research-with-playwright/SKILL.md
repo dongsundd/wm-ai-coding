@@ -9,7 +9,7 @@ Execute only from a `using-wm` handoff that names the change, browser scope, and
 
 # Research With Playwright
 
-Use Playwright MCP to collect runtime behavior facts. Keep observed facts separate from inference and requirements. Do not use browser exploration as a substitute for CodeGraph analysis or executable project tests.
+Use Playwright MCP to collect runtime behavior facts. Keep observed facts separate from inference and requirements. Do not use browser exploration as a substitute for structural analysis or executable project tests.
 
 ## Decide applicability
 

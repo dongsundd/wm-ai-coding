@@ -1,0 +1,217 @@
+{
+  "change": "complete-evidence-protocol",
+  "tasks": [
+    {
+      "task": "task-1",
+      "title": "Task 1: Route stage, support and profile skills through parent handoffs",
+      "completed": true,
+      "acceptance_runs": [
+        "f1c090b7e47e4e80b2ae681249b52c80"
+      ],
+      "final_run": "3c3c1faf50a54fbe8902fd92323edb5a",
+      "status": "passed"
+    },
+    {
+      "task": "task-2",
+      "title": "Task 2: Require executable task acceptance before advancement",
+      "completed": true,
+      "acceptance_runs": [
+        "847db815e79f4a1f8561a39f220103d0"
+      ],
+      "final_run": "821be6f827b44d0e8f63602c118d5f2d",
+      "status": "passed"
+    },
+    {
+      "task": "task-3",
+      "title": "Task 3: Report archive integrity and failing CLI exit codes",
+      "completed": true,
+      "acceptance_runs": [
+        "373bb21a94144218a15a1e72359a2b66"
+      ],
+      "final_run": "9e47fa3d2e1246f3a762fdc094286a08",
+      "status": "passed"
+    },
+    {
+      "task": "task-4",
+      "title": "Task 4: Bind evidence to release and declared environment identity",
+      "completed": true,
+      "acceptance_runs": [
+        "a63dae270a7b41c0aed425d0b9a4eee2"
+      ],
+      "final_run": "b2cfb5f30a6d436085f08391fb3c31b3",
+      "status": "passed"
+    },
+    {
+      "task": "task-5",
+      "title": "Task 5: Guard host tool calls through capability-aware adapters",
+      "completed": true,
+      "acceptance_runs": [
+        "8d589edd29964e5d81aeb0c505867e3a"
+      ],
+      "final_run": "8e2c3b7e612d45cbba2dafb46b6b44de",
+      "status": "passed"
+    },
+    {
+      "task": "task-6",
+      "title": "Task 6: Validate specification transforms and preserve portable evidence",
+      "completed": true,
+      "acceptance_runs": [
+        "27bc788878fc4136a090088c77fe5c21"
+      ],
+      "final_run": "45724f1bae0a4cde942c488a8e264460",
+      "status": "passed"
+    },
+    {
+      "task": "task-7",
+      "title": "Task 7: Require structured review and conditional browser results",
+      "completed": true,
+      "acceptance_runs": [
+        "ac3ccedb8bc243ce95d9145b8ab8c3d5"
+      ],
+      "final_run": "7762ca0a98014a9aa0ce25418028270f",
+      "status": "passed"
+    },
+    {
+      "task": "task-8",
+      "title": "Task 8: Exercise lifecycle and host adapters with behavior evaluations",
+      "completed": true,
+      "acceptance_runs": [
+        "6b209b44abb844c2a539a1fc96491805"
+      ],
+      "final_run": "72232bb1450743fcb7921a9084a74c63",
+      "status": "passed"
+    },
+    {
+      "task": "task-9",
+      "title": "Task 9: Provide bounded briefs diagnostics and correlated traces",
+      "completed": true,
+      "acceptance_runs": [
+        "92ea2b5351e849308408263da5335725"
+      ],
+      "final_run": "7babce2a943445e89408a13a770ed05d",
+      "status": "passed"
+    },
+    {
+      "task": "task-10",
+      "title": "Task 10: Run independent checks in isolated workspaces before serial integration",
+      "completed": true,
+      "acceptance_runs": [
+        "d82001a5dd69471ca467540e42a49294"
+      ],
+      "final_run": "7dac582ac8d44f75a7a942d5b26ecf71",
+      "status": "passed"
+    }
+  ],
+  "checks": {
+    "task-1": {
+      "id": "3c3c1faf50a54fbe8902fd92323edb5a",
+      "status": "passed",
+      "duration_ms": 921
+    },
+    "task-2": {
+      "id": "821be6f827b44d0e8f63602c118d5f2d",
+      "status": "passed",
+      "duration_ms": 2516
+    },
+    "task-3": {
+      "id": "9e47fa3d2e1246f3a762fdc094286a08",
+      "status": "passed",
+      "duration_ms": 2750
+    },
+    "task-4": {
+      "id": "b2cfb5f30a6d436085f08391fb3c31b3",
+      "status": "passed",
+      "duration_ms": 1109
+    },
+    "task-5": {
+      "id": "8e2c3b7e612d45cbba2dafb46b6b44de",
+      "status": "passed",
+      "duration_ms": 2547
+    },
+    "task-6": {
+      "id": "45724f1bae0a4cde942c488a8e264460",
+      "status": "passed",
+      "duration_ms": 172
+    },
+    "task-7": {
+      "id": "7762ca0a98014a9aa0ce25418028270f",
+      "status": "passed",
+      "duration_ms": 2328
+    },
+    "task-8": {
+      "id": "72232bb1450743fcb7921a9084a74c63",
+      "status": "passed",
+      "duration_ms": 218
+    },
+    "task-9": {
+      "id": "7babce2a943445e89408a13a770ed05d",
+      "status": "passed",
+      "duration_ms": 1500
+    },
+    "task-10": {
+      "id": "7dac582ac8d44f75a7a942d5b26ecf71",
+      "status": "passed",
+      "duration_ms": 953
+    },
+    "full-suite": {
+      "id": "15c189bcdad648e7b416165fb533f605",
+      "status": "passed",
+      "duration_ms": 57922
+    },
+    "compile": {
+      "id": "16ec67ba65574d1c80eb01e91d217cc7",
+      "status": "passed",
+      "duration_ms": 94
+    },
+    "release-mcp": {
+      "id": "43c84b5ff20945a2bb38b9e219dbc0cc",
+      "status": "passed",
+      "duration_ms": 1109
+    },
+    "claude-manifest": {
+      "id": "502fbac7914f489e8dd3165302ae1a5a",
+      "status": "passed",
+      "duration_ms": 953
+    },
+    "wheel-build": {
+      "id": "d6a31a41c77045779374a930b972a8de",
+      "status": "passed",
+      "duration_ms": 2265
+    },
+    "wheel-install": {
+      "id": "ba5bd447a0e84120becb4d833a661d68",
+      "status": "passed",
+      "duration_ms": 10125
+    },
+    "protocol-eval": {
+      "id": "93ee7356cb634575ba9f60e283ee160e",
+      "status": "passed",
+      "duration_ms": 172
+    },
+    "diff-check": {
+      "id": "61af31b7e2e74dc49ce69676a50f54a7",
+      "status": "passed",
+      "duration_ms": 109
+    }
+  },
+  "tests": 80,
+  "bundle": {
+    "valid": true,
+    "version": "0.8.0",
+    "path": "D:\\Workspaces\\wm-ai-coding\\plugins\\wm-ai-coding",
+    "digest": "d21dd73e09c31354b47f9b943422b814721920e752adc5d7fe5bd1f856d92ff3"
+  },
+  "review_mode": "self",
+  "residual_notes": [
+    {
+      "severity": "warning",
+      "message": "Earlier harden-harness-runtime archive assets are absent; history is retained and integrity failure is reported separately.",
+      "resolved": false
+    },
+    {
+      "severity": "info",
+      "message": "Self review, deterministic protocol tests, native Claude manifest validation and MCP handshakes ran. Live hook trust/activation and live model routing are outside this source-change verification. DSH provides a bridge contract; batch checks do not launch agents or merge code.",
+      "resolved": false
+    }
+  ]
+}

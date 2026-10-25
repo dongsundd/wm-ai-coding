@@ -1,31 +1,29 @@
 schema_version: 1
+protocol_version: 2
 name: using-wm
 initial: clarify
 gates:
   - design_approved
-  - codegraph_impact
   - planning_artifacts
+  - structural_analysis
+  - frontend_design
   - task_contract
   - task_baseline
   - all_tasks_complete
   - verification
-  - codegraph_recheck
+  - specs_synced
 states:
   clarify:
     skill: brainstorming
-    next: impact
-    exit_gates: []
-  impact:
-    skill: analyze-codegraph-impact
     next: specify
-    exit_gates: [codegraph_impact]
+    exit_gates: []
   specify:
     skill: openspec-propose
     conditional_skills:
       - when: frontend_surface_changed
         skill: frontend-design
     next: tasks
-    exit_gates: [planning_artifacts, design_approved]
+    exit_gates: [planning_artifacts, structural_analysis, frontend_design, design_approved]
   tasks:
     skill: openspec-continue-change
     next: apply
@@ -38,8 +36,12 @@ states:
   verify:
     skill: openspec-verify-change
     next: close
-    exit_gates: [verification, codegraph_recheck]
+    exit_gates: [verification]
   close:
+    skill: openspec-sync-specs
+    next: archive
+    exit_gates: [specs_synced]
+  archive:
     skill: openspec-archive-change
     terminal: true
     exit_gates: []

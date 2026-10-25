@@ -1,0 +1,32 @@
+Processing d:\workspaces\wm-ai-coding\.wm\build\wm_ai_coding_runtime-0.8.0-py3-none-any.whl
+Installing collected packages: wm-ai-coding-runtime
+Successfully installed wm-ai-coding-runtime-0.8.0
+{
+  "schema_version": 1,
+  "workflow": {
+    "name": "using-wm",
+    "version": 1,
+    "checksum": "ea6fc37f3359cb08474ef627aa88e5900375f0d9240c65a06ce0ac421bd2edb4"
+  },
+  "revision": 1,
+  "active_change": null,
+  "changes": {},
+  "updated_at": "2026-10-25T09:16:30.781290+00:00",
+  "maintenance": {
+    "gitignore_changed": false,
+    "untracked_files": []
+  }
+}
+{
+  "active_change": null,
+  "changes": {},
+  "revision": 1,
+  "schema_version": 1,
+  "updated_at": "2026-10-25T09:16:30.781290+00:00",
+  "workflow": {
+    "checksum": "ea6fc37f3359cb08474ef627aa88e5900375f0d9240c65a06ce0ac421bd2edb4",
+    "name": "using-wm",
+    "version": 1
+  }
+}
+{"valid": true, "wheel": "wm_ai_coding_runtime-0.8.0-py3-none-any.whl", "installed_data_and_cli": "passed"}

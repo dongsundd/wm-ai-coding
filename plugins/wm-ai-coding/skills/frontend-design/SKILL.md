@@ -1,6 +1,6 @@
 ---
 name: frontend-design
-description: Use only when `using-wm` is in the design stage and a requirement or CodeGraph scope changes a visible Web or app page, screen, component, layout, interaction, responsive behavior, accessibility behavior, or design system.
+description: Use only when `using-wm` is in the design stage and a requirement or affected code scope changes a visible Web or app page, screen, component, layout, interaction, responsive behavior, accessibility behavior, or design system.
 ---
 
 # Frontend Design
@@ -13,7 +13,7 @@ Execute only from a `using-wm` handoff for the active change's `specify` stage w
 
 ## Establish current-system evidence
 
-- Use the prior CodeGraph impact analysis to locate routes, screens, shells, components, styling, tokens, state, assets, and related tests.
+- When available, use CodeGraph to locate routes, screens, shells, components, styling, tokens, state, assets, and related tests.
 - For an existing Web surface, use `research-with-playwright` when rendered observation or reference research is necessary. For native apps, use available device, emulator, preview, or supplied visual evidence.
 - Treat user direction, supplied references, existing product behavior, and the repository design system as constraints.
 - Preserve the established framework, component library, and styling strategy unless the approved architecture explicitly changes them.

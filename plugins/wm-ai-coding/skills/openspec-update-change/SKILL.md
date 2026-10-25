@@ -1,116 +1,40 @@
 ---
 name: openspec-update-change
 description: Use only when `using-wm` selects revision of existing OpenSpec planning artifacts for a change.
-allowed-tools: Bash(openspec:*)
 license: MIT
 metadata:
   author: openspec
   version: "1.0"
 ---
 
-## Harness entry contract
+## Controller contract
 
-Execute only from a `using-wm` handoff that names the change, approved revision, and affected artifacts. A direct user request must enter `using-wm`; do not start an independent workflow. Revise only those artifacts, then return control to `using-wm`.
+Run only from a `using-wm` handoff naming the change, stage, task and exact scope.
+A direct user request routes through `using-wm`. Perform only the assigned operation,
+then return its result to the controller; never invoke another stage skill.
 
-When `design.md` already contains a `## Frontend design` section, Preserve `## Frontend design` byte-for-byte while revising the surrounding artifact. Never replace, reorder, normalize, or regenerate that section; `frontend-design` is its only writer.
+Use `<repo>/sdd/config.yaml`, `<repo>/sdd/specs/` and
+`<repo>/sdd/changes/<change>/` directly. Use filesystem operations and the `wm` CLI.
+Do not run the official OpenSpec CLI or create an `openspec/` directory.
+`tasks.md` is the sole implementation plan. Preserve existing authorization: do not
+invent approval or demand a new request when execution is already authorized.
+Host permissions and sandbox policy remain authoritative.
 
-> **WM AI Coding direct-root contract (overrides path and CLI instructions below):** Use `<repo>/sdd/config.yaml`, `<repo>/sdd/specs/`, and `<repo>/sdd/changes/` directly. Do not run `openspec` CLI commands that read or mutate artifacts, because the official CLI requires an `openspec/` directory. Apply this skill's workflow semantics with repository file operations, and never create `openspec/` or `sdd/openspec/`.
+Before work read `wm --repo <repo> recovery --change <change>`. The controller records
+`wm handoff --scope <repo-relative-paths>`; return with `wm finish-handoff <id>` and
+`--result completed --output <existing-paths>`, or a failed/blocked/scope_changed result
+with `--reason`. Output paths are repository-relative. The controller owns advancement. A matching completed stage/task handoff is required.
+Support/profile calls use `wm handoff --skill <name> --parent <running-id>` and return to that parent; they never advance the stage.
 
+When editing `design.md`, preserve an existing `## Frontend design` section
+byte-for-byte. Only `frontend-design` writes that section.
 
-Revise a change's existing planning artifacts and keep them coherent. Never edit code.
+## Update operation
 
-**Store selection:** If the user names a store (a store is a standalone OpenSpec repo registered on this machine) or the work lives in one, run `openspec store list --json` to discover registered store ids, then pass `--store <id>` on the commands that read or write specs and changes (`new change`, `status`, `instructions`, `list`, `show`, `validate`, `archive`, `doctor`, `context`, `schemas`, `view`). Once selected, treat `--store <id>` as sticky for the rest of the workflow. Every unscoped example of those commands below is shorthand: before running it, append the flag. For example, run `openspec status --change "<name>" --json --store "<id>"`, not the unscoped form shown below. Other commands do not take the flag. Hints printed by commands already carry the flag; keep it on follow-ups. Without a store, commands act on the nearest local `openspec/` root.
+Read the changed requirement and current proposal/spec/design/tasks. Update only the
+assigned scope while preserving stable references and unaffected text. Inspect affected
+implementation before revising architecture. Do not edit product code here.
 
-**Project check:** These steps expect a project that already uses OpenSpec. Before the first step that writes anything (`new change`, `archive`, `sync specs`, or authoring an artifact file), confirm the project has a root: run `openspec list --json` (with `--store <id>` when a store is selected, since the store is then the root) and read `root`. A root object means the project is set up. `"root": null` means it is not - there is no `openspec/` directory here, and a write such as `openspec new change` would create one as a side effect. The command also exits non-zero, which is that answer rather than a broken CLI, so read the JSON instead of retrying or working around it.
-
-One `"root": null` is not about setup: when a `status` error message starts with `Declared in` or `Invalid store declaration in` and names this project's `openspec/config.yaml` (or `config.yml`), the project does use OpenSpec through a store it declares, which this machine cannot resolve (the store is not registered, or the `store:` line is malformed). Do not treat it as uninitialized and skip the branches below: stop before writing and show the user that error's `message` and `fix`.
-
-Otherwise, with no root, what happens next depends on how this workflow was reached:
-
-- **Auto-selected**: you chose this workflow yourself, without the user naming OpenSpec, naming this skill, or running its slash command. Stop using OpenSpec and answer the request normally, as you would with no OpenSpec installed. Do not ask them to set anything up and do not mention OpenSpec setup.
-- **Explicit OpenSpec request**: the user named OpenSpec, named this skill, or ran its slash command. Stop before writing and ask how to proceed: set this project up (`openspec init`), target a store they already have (`--store <id>`), or continue without OpenSpec for this request. Wait for their answer.
-
-In both branches, never create the root as a side effect: do not run `openspec init` until the user asks for it, do not hand-create `openspec/` files, and do not let a command create it.
-
-**Input**: Optionally specify a change name. If omitted, check if it can be inferred from conversation context. If vague or ambiguous you MUST prompt for available changes.
-
-This stage revises artifacts that already exist; missing artifacts are reported to `using-wm` for legal-stage routing.
-
-**Steps**
-
-1. **Select the change**
-
-   If a name is provided, use it. Otherwise:
-   - Infer from conversation context if the user mentioned a change
-   - Auto-select if only one active change exists
-   - If ambiguous, run `openspec list --json` to get available changes sorted by most recently modified, and ask the user to select one
-
-   When prompting, present the top 3-4 most recently modified changes as options, showing:
-   - Change name
-   - Status (e.g., "0/5 tasks", "complete", "no tasks")
-   - How recently it was modified (from `lastModified` field)
-
-   Mark the most recently modified change as "(Recommended)" since it's likely what the user wants to update.
-
-   Announce: "Using change: <name>" and the revision scope selected by `using-wm`.
-
-2. **Get the change's artifacts**
-   ```bash
-   openspec status --change "<name>" --json
-   ```
-   Parse the JSON to understand current state. The response includes:
-   - `schemaName`: The workflow schema being used (e.g., "spec-driven")
-   - `artifacts`: Array of artifacts with their status ("done", "skipped", "ready", "blocked")
-   - `isPlanningComplete`: Boolean indicating if all planning artifacts are complete. Older CLI versions expose the same value as `isComplete`.
-   - `planningHome`, `changeRoot`, `artifactPaths`, and `actionContext`: path and scope context. Use these instead of assuming repo-local paths.
-
-   The artifact ids and paths come from the active schema - do NOT assume them, and do NOT branch on hardcoded artifact names. Custom schemas must work unchanged.
-
-   The files to edit are `artifactPaths.<id>.existingOutputPaths` - the concrete files that exist on disk, already glob-expanded for glob artifacts (e.g. `specs/**/*.md`). Do NOT write to `resolvedOutputPath`: for a glob artifact it is still the glob pattern, not a real file.
-
-3. **Understand the request**
-   - If the user asked for a specific revision ("the design now uses X"), that is the starting edit.
-   - If they only said "update" / "make this coherent", treat it as a coherence review: read the existing artifacts and check them against each other for contradictions, gaps, and duplication.
-
-4. **Read and reconcile**
-   - Read the artifact(s) the request touches and the change's other existing artifacts.
-   - Draft the requested edit in the conversation, not in files. Work out exactly what it changes; step 5 owns every write. Then check every other existing artifact against the drafted edit - in ANY direction: an edit to a later artifact may require revising an earlier one, not only the other way around. Build order is a useful reading order, not a constraint on which artifacts may be revised.
-   - Note everything that is now inconsistent, missing, or contradictory.
-   - Propose revisions to files that already exist (`existingOutputPaths`). If an artifact has no existing output files and status `ready` or `blocked`, report it to `using-wm` as a missing-artifact gate. Leave `skipped` artifacts untouched.
-   - A glob artifact (e.g. `specs/**/*.md`) is marked `done` after at least one file matches, and the continue workflow only handles `ready` artifacts. When reconciliation identifies a missing file for a glob artifact whose `existingOutputPaths` is non-empty:
-     1. Run `openspec instructions "<artifact-id>" --change "<name>" --json` and use its `instruction` and `template`. Treat `context` and `rules` as constraints; do not copy them into the file. If instructions report `skipped: true`, do not create the file. Read current dependency files from disk; if a required non-skipped dependency is missing, stop and ask the user to restore it first.
-     2. Choose a concrete path inside `changeRoot` that matches `artifactPaths.<id>.outputPath` and does not already exist. Verify it remains inside `changeRoot` after resolving any symlinked parent directories. The glob `resolvedOutputPath` is not a valid target.
-     3. Include the new file in step 5's proposed revisions and create it only after the user confirms.
-     4. After confirmation, immediately before creation, refresh status and instructions. Verify the artifact is still in scope, not skipped, and partially populated; repeat the concrete-path checks above.
-     5. Use a create operation that fails if the target already exists. If `instruction` delegates creation to another skill or command, invoke it only if it can honor the confirmed path and these guardrails; otherwise stop. If any check fails or the confirmed draft is no longer valid, stop and reconcile with the user rather than replacing existing content or choosing a different path.
-   - If the change is already coherent, say so and propose no revisions.
-
-5. **Confirm and apply, one artifact at a time**
-   - This step performs every artifact write in this workflow; no earlier step edits an artifact.
-   - Show each proposed revision and why - including the requested edit drafted in step 4. Write only after the user confirms.
-   - If the user rejects a revision, do not write it - leave that artifact unchanged.
-   - When a substantial rewrite is needed, get that artifact's rules and template first:
-     ```bash
-     openspec instructions "<artifact-id>" --change "<name>" --json
-     ```
-
-6. **Point to the next step (guidance only - NEVER act on it)**
-   - Artifacts with empty `existingOutputPaths` and status `ready` or `blocked` -> report the missing-artifact gate to `using-wm`.
-   - Change already implemented (tasks checked off / already applied) -> report that implementation may no longer match the revised plan; `using-wm` selects the legal next stage.
-   - Everything done and implemented -> return the result to `using-wm` for verification and closure routing.
-
-**Output**
-
-After each invocation, show:
-- Which artifacts were revised (and which proposed revisions were rejected)
-- Any file created under a glob artifact that was already partially populated
-- Any missing artifact returned to `using-wm` (artifacts with no files yet and status `ready` or `blocked`, never `skipped` artifacts)
-- Where the change stands and the recommended next command
-
-**Guardrails**
-- Planning artifacts only - NEVER edit implementation code. If the revised plan implies code changes, stop and return the scope change to `using-wm`.
-- Use the artifact ids and paths reported by `openspec status`; never branch on hardcoded artifact names.
-- Edit only the concrete files in `existingOutputPaths`; never write to a glob `resolvedOutputPath`.
-- Do not advance the build frontier: if an artifact has empty `existingOutputPaths` and status `ready` or `blocked`, return it to `using-wm` for routing. Leave `skipped` artifacts untouched. The only new-file scope is a confirmed concrete path under a glob artifact whose `existingOutputPaths` is non-empty.
-- Confirm every edit with the user before writing.
-- If the request changes the change's *intent* rather than refining it, return that finding to `using-wm` for a new-change decision.
+Return changed artifacts, invalidated assumptions, affected tasks and approval needs.
+The controller reconciles evidence and resumes from the earliest invalid gate. Never
+retain approval for altered planning inputs or silently advance into apply.

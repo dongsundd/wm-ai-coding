@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "coverage": {
+    "runtime::R8": [
+      "72232bb1450743fcb7921a9084a74c63"
+    ],
+    "runtime::R7::contract-7": [
+      "7762ca0a98014a9aa0ce25418028270f"
+    ],
+    "runtime::R3::contract-3": [
+      "9e47fa3d2e1246f3a762fdc094286a08"
+    ],
+    "runtime::R10::contract-10": [
+      "7dac582ac8d44f75a7a942d5b26ecf71"
+    ],
+    "runtime::R6": [
+      "45724f1bae0a4cde942c488a8e264460"
+    ],
+    "runtime::R3": [
+      "9e47fa3d2e1246f3a762fdc094286a08"
+    ],
+    "runtime::R5": [
+      "8e2c3b7e612d45cbba2dafb46b6b44de"
+    ],
+    "runtime::R9::contract-9": [
+      "7babce2a943445e89408a13a770ed05d"
+    ],
+    "runtime::R4::contract-4": [
+      "b2cfb5f30a6d436085f08391fb3c31b3"
+    ],
+    "runtime::R2::contract-2": [
+      "821be6f827b44d0e8f63602c118d5f2d"
+    ],
+    "runtime::R7": [
+      "7762ca0a98014a9aa0ce25418028270f"
+    ],
+    "runtime::R10": [
+      "7dac582ac8d44f75a7a942d5b26ecf71"
+    ],
+    "runtime::R1::contract-1": [
+      "3c3c1faf50a54fbe8902fd92323edb5a"
+    ],
+    "runtime::R5::contract-5": [
+      "8e2c3b7e612d45cbba2dafb46b6b44de"
+    ],
+    "runtime::R4": [
+      "b2cfb5f30a6d436085f08391fb3c31b3"
+    ],
+    "runtime::R9": [
+      "7babce2a943445e89408a13a770ed05d"
+    ],
+    "runtime::R6::contract-6": [
+      "45724f1bae0a4cde942c488a8e264460"
+    ],
+    "runtime::R8::contract-8": [
+      "72232bb1450743fcb7921a9084a74c63"
+    ],
+    "runtime::R1": [
+      "3c3c1faf50a54fbe8902fd92323edb5a"
+    ],
+    "runtime::R2": [
+      "821be6f827b44d0e8f63602c118d5f2d"
+    ]
+  }
+}

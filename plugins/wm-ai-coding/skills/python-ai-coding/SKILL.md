@@ -5,15 +5,15 @@ description: Use only when `using-wm` selects the Python profile for an affected
 
 ## Harness entry contract
 
-Execute only from a `using-wm` handoff whose CodeGraph scope activates Python. A direct user request must enter `using-wm`. Apply this profile only to the assigned stage or task, then return control to `using-wm`.
+Execute only from a `using-wm` handoff whose affected code scope activates Python. A direct user request must enter `using-wm`. Apply this profile only to the assigned stage or task, then return control to `using-wm`.
 
 # Python AI Coding
 
-Apply Python constraints as a technology profile inside `using-wm`. This profile supplements OpenSpec, CodeGraph, TDD, review, and delivery; it does not create a separate workflow.
+Apply Python constraints as a technology profile inside `using-wm`. This profile supplements OpenSpec, TDD, review, and delivery, and uses CodeGraph when it is available; it does not create a separate workflow.
 
 ## Select the profile
 
-Activate when repository evidence or the CodeGraph impact scope includes Python source, `pyproject.toml`, `setup.cfg`, `setup.py`, requirements files, or Python lock files. Inspect the repository before choosing rules:
+Activate when repository evidence or the affected code scope includes Python source, `pyproject.toml`, `setup.cfg`, `setup.py`, requirements files, or Python lock files. Inspect the repository before choosing rules:
 
 - supported Python versions and package manager;
 - application type: library, CLI, service, job, data pipeline, or test tooling;
@@ -44,7 +44,7 @@ For each Python task in `tasks.md`, include:
 - RED test and exact focused test command;
 - configured format, lint, type, test, and packaging checks that apply.
 
-Use CodeGraph to identify imports, callers, public surfaces, framework registration, and related tests before planning edits.
+When available, use CodeGraph to identify imports, callers, public surfaces, framework registration, and related tests before planning edits.
 
 ## Implementation gates
 

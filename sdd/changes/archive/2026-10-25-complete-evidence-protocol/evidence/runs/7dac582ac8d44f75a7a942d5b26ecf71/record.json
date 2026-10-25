@@ -1,0 +1,48 @@
+{
+  "id": "7dac582ac8d44f75a7a942d5b26ecf71",
+  "change": "complete-evidence-protocol",
+  "check_id": "task-10",
+  "argv": [
+    "D:\\Program\\Python\\Python312\\python.exe",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "plugins/wm-ai-coding/tests",
+    "-p",
+    "test_protocol.py",
+    "-k",
+    "BatchTests"
+  ],
+  "started_at": "2026-10-25T09:15:17.377058+00:00",
+  "inputs": {
+    "planning": "37edd64ff32fb0c8a16d1803b056d839e615fd27ce45ac58d3fdfd12650607a6",
+    "tasks": "5321b6823da65b8e03bdedb8d2a79c5a3dedd39843c66999a524be25e4b88087",
+    "plan": "4e005b2c326396e47af2d37df836a9951a71ac89ae4e7efe0e805b3315865a42",
+    "workspace": "f09f004b716bd1f0e77a849b60d49a1ef33a0b07b852dfa168882b4b29dd12c2",
+    "environment": "8f10f272a154fc5de78d80fdc7bbf2253583f390a6583a09c0372dab61058b4f"
+  },
+  "status": "passed",
+  "exit_code": 0,
+  "task": "task-10",
+  "kind": "test",
+  "check_digest": "e604554a68b97bfb106d40ff6840f401f7618731992dcb2c8e94f3d2b069ee39",
+  "trace_id": "7dac582ac8d44f75a7a942d5b26ecf71",
+  "workspace_id": "D:\\Workspaces\\wm-ai-coding",
+  "handoff_id": "95febecfdf564200bc6356ddbb08c331",
+  "stage": "verify",
+  "parent_trace_id": "a402000c2ebd486aab688d4e6ddee3eb",
+  "finished_at": "2026-10-25T09:15:18.385569+00:00",
+  "duration_ms": 953,
+  "stdout_bytes": 0,
+  "stderr_bytes": 106,
+  "outputs": {
+    "planning": "37edd64ff32fb0c8a16d1803b056d839e615fd27ce45ac58d3fdfd12650607a6",
+    "tasks": "5321b6823da65b8e03bdedb8d2a79c5a3dedd39843c66999a524be25e4b88087",
+    "plan": "4e005b2c326396e47af2d37df836a9951a71ac89ae4e7efe0e805b3315865a42",
+    "workspace": "f09f004b716bd1f0e77a849b60d49a1ef33a0b07b852dfa168882b4b29dd12c2",
+    "environment": "8f10f272a154fc5de78d80fdc7bbf2253583f390a6583a09c0372dab61058b4f"
+  },
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "d0d829a7d8085aed675b0cc682d4cb37bc950a2936ac2274f18470d5da35b8f9"
+}

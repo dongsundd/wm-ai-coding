@@ -54,6 +54,8 @@ def load_workflow(path: Path) -> Workflow:
         raise WorkflowError(f"invalid workflow YAML: {exc}") from exc
     if not isinstance(data, dict):
         raise WorkflowError("workflow must be a YAML object")
+    if type(data.get("schema_version")) is not int or data["schema_version"] != 1:
+        raise WorkflowError("unsupported workflow schema_version")
     initial = data.get("initial")
     state_data = data.get("states")
     gates_data = data.get("gates", [])
@@ -62,6 +64,10 @@ def load_workflow(path: Path) -> Workflow:
     if not isinstance(gates_data, list) or not all(isinstance(item, str) for item in gates_data):
         raise WorkflowError("workflow gates must be a string list")
     gates = frozenset(gates_data)
+    known_gates = {"design_approved", "planning_artifacts", "structural_analysis", "frontend_design",
+                   "task_contract", "task_baseline", "all_tasks_complete", "verification", "specs_synced"}
+    if not gates <= known_gates:
+        raise WorkflowError("workflow declares unsupported gates")
     states: dict[str, WorkflowState] = {}
     for name, config in state_data.items():
         if not isinstance(name, str) or not isinstance(config, dict):
@@ -70,14 +76,16 @@ def load_workflow(path: Path) -> Workflow:
         next_name = config.get("next")
         exit_gates = config.get("exit_gates", [])
         conditional_data = config.get("conditional_skills", [])
-        if not isinstance(skill, str):
+        if not isinstance(skill, str) or not skill.strip():
             raise WorkflowError(f"state {name} has no skill")
         if next_name is not None and not isinstance(next_name, str):
             raise WorkflowError(f"state {name} has invalid next state")
-        if not isinstance(exit_gates, list) or not all(item in gates for item in exit_gates):
+        if not isinstance(exit_gates, list) or not all(isinstance(item, str) and item in gates for item in exit_gates):
             raise WorkflowError(f"state {name} has unknown exit gate")
         if not isinstance(conditional_data, list):
             raise WorkflowError(f"state {name} has invalid conditional skills")
+        if type(config.get("terminal", False)) is not bool:
+            raise WorkflowError(f"state {name} terminal must be boolean")
         conditional_skills: list[ConditionalSkill] = []
         for item in conditional_data:
             if not isinstance(item, dict) or not isinstance(item.get("when"), str) or not isinstance(item.get("skill"), str):
@@ -92,17 +100,41 @@ def load_workflow(path: Path) -> Workflow:
             repeat=config.get("repeat"),
             conditional_skills=tuple(conditional_skills),
         )
+        if config.get("repeat") not in (None, "per_task"):
+            raise WorkflowError(f"unsupported repeat mode in {name}")
     for state in states.values():
         if state.next is not None and state.next not in states:
             raise WorkflowError(f"state {state.name} points to unknown state {state.next}")
         if state.terminal and state.next is not None:
             raise WorkflowError(f"terminal state {state.name} cannot have next")
+        if not state.terminal and state.next is None:
+            raise WorkflowError(f"nonterminal state {state.name} needs next")
+    visited = set()
+    cursor = initial
+    while cursor is not None:
+        if cursor in visited:
+            raise WorkflowError("workflow contains a cycle")
+        visited.add(cursor)
+        cursor = states[cursor].next
+    if visited != set(states):
+        raise WorkflowError("workflow contains unreachable states")
+    registry = path.parent.parent / "registry.yaml"
+    if not registry.is_file():
+        registry = path.parent / "registry.yaml"
+    if registry.is_file():
+        registered = yaml.safe_load(registry.read_text(encoding="utf-8"))["skills"]
+        for name, state in states.items():
+            for skill in [state.skill] + [c.skill for c in state.conditional_skills]:
+                if skill not in registered or name not in registered[skill].get("stages", []):
+                    raise WorkflowError(f"unregistered stage skill: {skill}")
+    if data.get("protocol_version", 1) not in {1, 2}:
+        raise WorkflowError("unsupported protocol version")
     return Workflow(
         schema_version=int(data.get("schema_version", 0)),
         name=str(data.get("name", "")),
         initial=initial,
         gates=gates,
         states=states,
-        checksum=hashlib.sha256(raw).hexdigest(),
+        checksum=hashlib.sha256(raw + (registry.read_bytes() if registry.is_file() else b"" )).hexdigest(),
         path=path.resolve(),
     )

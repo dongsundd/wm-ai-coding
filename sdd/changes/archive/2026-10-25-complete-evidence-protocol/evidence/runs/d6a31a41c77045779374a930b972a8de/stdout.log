@@ -1,0 +1,9 @@
+Processing .\plugins\wm-ai-coding
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: wm-ai-coding-runtime
+  Building wheel for wm-ai-coding-runtime (pyproject.toml): started
+  Building wheel for wm-ai-coding-runtime (pyproject.toml): finished with status 'done'
+  Created wheel for wm-ai-coding-runtime: filename=wm_ai_coding_runtime-0.8.0-py3-none-any.whl size=39109 sha256=6f3e7f37a9cb9bf1cd0d90766b9ce7fde6a164d0f5fc55fa29b955e4d17f0181
+  Stored in directory: C:\Users\Administrator\AppData\Local\Temp\pip-ephem-wheel-cache-y9g7fg66\wheels\48\83\a5\e93a355627323b3f604c80ce5c8fd804ca6161067e2a061e72
+Successfully built wm-ai-coding-runtime

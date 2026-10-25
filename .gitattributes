@@ -1,1 +1,4 @@
 * text=auto eol=lf
+
+# Preserve content-addressed archive records and logs byte-for-byte.
+sdd/changes/archive/** -text -whitespace

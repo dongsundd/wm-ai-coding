@@ -6,15 +6,15 @@
 !/sdd/changes/archive/
 !/sdd/changes/archive/**/
 !/sdd/changes/archive/**/*
-/sdd/changes/archive/**/tasks.md
-/sdd/changes/archive/**/verification.md
 # END WM AI CODING
 /.idea
 /.codegraph
 /.worktrees
-/sdd/changes/*
-!/sdd/changes/archive/
-!/sdd/changes/archive//
-!/sdd/changes/archive//*
-/sdd/changes/archive//tasks.md
-/sdd/changes/archive//verification.md
+
+# Python runtime validation artifacts
+__pycache__/
+*.egg-info/
+/plugins/wm-ai-coding/build/
+/.playwright-mcp
+/sdd
+/research

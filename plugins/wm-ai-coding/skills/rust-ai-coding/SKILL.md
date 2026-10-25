@@ -5,7 +5,7 @@ description: Use only when `using-wm` selects the Rust profile for an affected O
 
 ## Harness entry contract
 
-Execute only from a `using-wm` handoff whose CodeGraph scope activates Rust. A direct user request must enter `using-wm`. Apply this profile only to the assigned stage or task, then return control to `using-wm`.
+Execute only from a `using-wm` handoff whose affected code scope activates Rust. A direct user request must enter `using-wm`. Apply this profile only to the assigned stage or task, then return control to `using-wm`.
 
 # Rust AI Coding
 
@@ -13,7 +13,7 @@ Apply Rust constraints as a technology profile inside `using-wm`. This profile a
 
 ## Select the profile
 
-Activate when repository evidence or the CodeGraph impact scope includes `.rs`, `Cargo.toml`, `Cargo.lock`, `rust-toolchain*`, or Cargo workspace configuration. Inspect before deciding rules:
+Activate when repository evidence or the affected code scope includes `.rs`, `Cargo.toml`, `Cargo.lock`, `rust-toolchain*`, or Cargo workspace configuration. Inspect before deciding rules:
 
 - workspace members, crate types, MSRV/toolchain pin, targets, and feature matrix;
 - library, binary, service, embedded, WASM, FFI, build-script, or proc-macro context;
@@ -45,7 +45,7 @@ For each Rust task in `tasks.md`, include:
 - RED test and exact focused command;
 - applicable format, lint, test, check, documentation, and target/feature commands.
 
-Use CodeGraph to identify callers, trait implementations, feature-gated paths, module exports, related tests, and downstream API impact before editing.
+When available, use CodeGraph to identify callers, trait implementations, feature-gated paths, module exports, related tests, and downstream API impact before editing.
 
 ## Implementation gates
 

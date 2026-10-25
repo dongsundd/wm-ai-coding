@@ -21,8 +21,6 @@ def inspect(change: Path) -> dict[str, object]:
         next_stage = "clarify"
     elif not evidence["specs"] or not evidence["design"]:
         next_stage = "specify"
-    elif not evidence["codegraph_impact"]:
-        next_stage = "impact"
     elif not evidence["tasks"] or not evidence["task_contract_valid"]:
         next_stage = "tasks"
     elif evidence["open_tasks"]:
@@ -32,10 +30,10 @@ def inspect(change: Path) -> dict[str, object]:
     else:
         next_stage = "close"
     missing = []
-    for key in ("proposal", "specs", "design", "codegraph_impact"):
+    for key in ("proposal", "specs", "design"):
         if not evidence[key]:
             missing.append(key)
-    if evidence["design"] and evidence["codegraph_impact"] and not evidence["task_contract_valid"]:
+    if evidence["design"] and not evidence["task_contract_valid"]:
         missing.append("task_contract")
     return {
         "change": change.name,

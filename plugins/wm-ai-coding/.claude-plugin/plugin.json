@@ -1,0 +1,11 @@
+{
+  "name": "wm-ai-coding",
+  "version": "0.8.0",
+  "description": "以 OpenSpec 为核心，集成 CodeGraph、头脑风暴与可验证交付的端到端 AI Coding Harness",
+  "author": {
+    "name": "WM AI Coding"
+  },
+  "skills": "./skills/",
+  "hooks": "./hooks/claude.json",
+  "mcpServers": "./.mcp.json"
+}

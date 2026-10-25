@@ -5,15 +5,15 @@ description: Use only when `using-wm` selects the HarmonyOS profile for an affec
 
 ## Harness entry contract
 
-Execute only from a `using-wm` handoff whose CodeGraph scope activates HarmonyOS. A direct user request must enter `using-wm`. Apply this profile only to the assigned stage or task, then return control to `using-wm`.
+Execute only from a `using-wm` handoff whose affected code scope activates HarmonyOS. A direct user request must enter `using-wm`. Apply this profile only to the assigned stage or task, then return control to `using-wm`.
 
 # HarmonyOS AI Coding
 
-Apply HarmonyOS and ArkTS constraints as a technology profile inside `using-wm`. This is an implementation overlay, not an independent workflow: OpenSpec, CodeGraph, TDD, review, and delivery remain owned by the harness.
+Apply HarmonyOS and ArkTS constraints as a technology profile inside `using-wm`. This is an implementation overlay, not an independent workflow: OpenSpec, TDD, review, and delivery remain owned by the harness, and CodeGraph is used when available.
 
 ## Select the profile
 
-Activate only when repository evidence or the CodeGraph impact scope includes `.ets`, `hvigorfile.ts`, `build-profile.json5`, `oh-package.json5`, or HarmonyOS module configuration. Record the detected SDK/API version, modules, build entry point, and verification commands under `## Technology profiles` in the active `design.md`.
+Activate only when repository evidence or the affected code scope includes `.ets`, `hvigorfile.ts`, `build-profile.json5`, `oh-package.json5`, or HarmonyOS module configuration. Record the detected SDK/API version, modules, build entry point, and verification commands under `## Technology profiles` in the active `design.md`.
 
 Repository instructions and checked-in configuration take precedence over this profile. Treat reference examples as defaults, never as proof of the installed SDK signature. Before using a platform API, inspect the project's SDK `.d.ts` declaration or the documentation matching its configured API level.
 
@@ -40,7 +40,7 @@ For each HarmonyOS task in `tasks.md`, include:
 - a RED test or strongest executable pre-implementation check;
 - focused verification and the module/application build command.
 
-Use CodeGraph first for project structure and impact scope. Use targeted SDK declaration lookup only for APIs CodeGraph cannot model.
+When available, use CodeGraph first for project structure and impact scope. Use targeted SDK declaration lookup only for APIs CodeGraph cannot model.
 
 ## Implementation gates
 

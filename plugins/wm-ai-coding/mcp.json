@@ -1,0 +1,30 @@
+{
+  "mcpServers": {
+    "codegraph": {
+      "command": "python",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/scripts/mcp_launcher.py",
+        "codegraph",
+        "serve",
+        "--mcp"
+      ],
+      "env": {
+        "CODEGRAPH_MCP_TOOLS": "explore,node,search,callers,callees,impact,files,status"
+      },
+      "type": "stdio"
+    },
+    "playwright": {
+      "command": "python",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/scripts/mcp_launcher.py",
+        "playwright-mcp",
+        "--isolated",
+        "--headless",
+        "--codegen=none",
+        "--block-service-workers"
+      ],
+      "type": "stdio"
+    }
+  },
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json"
+}
