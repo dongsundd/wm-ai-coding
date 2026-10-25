@@ -75,7 +75,7 @@ def complete_task(tasks_path: Path, index: int, task_count: int = 2) -> None:
 
 
 def machine_for(repo: Path) -> StateMachine:
-    return StateMachine(repo, load_workflow(PLUGIN_ROOT / "skills" / "development-workflow" / "workflow.yaml"))
+    return StateMachine(repo, load_workflow(PLUGIN_ROOT / "skills" / "development-workflow" / "config" / "workflow.yaml"))
 
 
 def advance_stage(machine):
@@ -377,7 +377,7 @@ class LockTest(unittest.TestCase):
 
 class WorkflowShapeTest(unittest.TestCase):
     def test_close_syncs_before_archive(self) -> None:
-        workflow = load_workflow(PLUGIN_ROOT / "skills" / "development-workflow" / "workflow.yaml")
+        workflow = load_workflow(PLUGIN_ROOT / "skills" / "development-workflow" / "config" / "workflow.yaml")
         self.assertEqual("specification-sync", workflow.states["close"].skill)
         self.assertEqual("archive", workflow.states["close"].next)
         self.assertEqual("change-archive", workflow.states["archive"].skill)

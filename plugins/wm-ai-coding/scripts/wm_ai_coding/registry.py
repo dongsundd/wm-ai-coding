@@ -61,12 +61,21 @@ def alias_findings(skills: dict, aliases, stage_aliases=None) -> list[str]:
     return findings
 
 
+def find_registry_path(workflow_path: Path) -> Path | None:
+    """Locate registry.yaml for source, config/ and installed data-file layouts."""
+    for candidate in (
+        workflow_path.parent / "registry.yaml",
+        workflow_path.parent.parent / "registry.yaml",
+        workflow_path.parent.parent.parent / "registry.yaml",
+    ):
+        if candidate.is_file():
+            return candidate
+    return None
+
+
 def workflow_registry(workflow) -> dict:
     # Installed wheels may carry a data-only registry next to workflow.yaml.
-    root = workflow.path.parent.parent.parent
-    path = root / "skills/registry.yaml"
-    if not path.is_file():
-        path = workflow.path.parent / "registry.yaml"
+    path = find_registry_path(workflow.path) or workflow.path.parent / "registry.yaml"
     return yaml.safe_load(path.read_text(encoding="utf-8"))
 
 

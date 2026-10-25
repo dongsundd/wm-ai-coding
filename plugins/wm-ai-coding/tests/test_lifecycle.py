@@ -36,10 +36,12 @@ class LifecycleCompatibility(unittest.TestCase):
     def test_invalid_alias_target_is_rejected_before_loading_workflow(self):
         import yaml
         from wm_ai_coding.workflow import load_workflow,WorkflowError
+        from wm_ai_coding.registry import find_registry_path
         with tempfile.TemporaryDirectory() as d:
             root=Path(d); workflow=root/'workflow.yaml';registry=root/'registry.yaml'
             data=yaml.safe_load(machine_for(root).workflow.path.read_text(encoding='utf-8'))
-            original=machine_for(root).workflow.path.parent.parent/'registry.yaml'
+            original=find_registry_path(machine_for(root).workflow.path)
+            self.assertIsNotNone(original)
             roles=yaml.safe_load(original.read_text(encoding='utf-8'))
             roles['aliases']['obsolete-skill']='missing-skill'
             workflow.write_text(yaml.safe_dump(data),encoding='utf-8')

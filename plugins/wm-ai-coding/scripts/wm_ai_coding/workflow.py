@@ -124,13 +124,11 @@ def load_workflow(path: Path) -> Workflow:
         cursor = states[cursor].next
     if visited != set(states):
         raise WorkflowError("workflow contains unreachable states")
-    registry = path.parent.parent / "registry.yaml"
-    if not registry.is_file():
-        registry = path.parent / "registry.yaml"
-    if registry.is_file():
+    from .registry import alias_findings, find_registry_path
+    registry = find_registry_path(path)
+    if registry is not None:
         registry_data = yaml.safe_load(registry.read_text(encoding="utf-8"))
         registered = registry_data["skills"]
-        from .registry import alias_findings
         if findings := alias_findings(registered, registry_data.get("aliases", {}), registry_data.get("stage_aliases", {})):
             raise WorkflowError("; ".join(findings))
         for name, state in states.items():

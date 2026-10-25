@@ -20,4 +20,4 @@ where = ["scripts"]
 include = ["wm_ai_coding*"]
 
 [tool.setuptools.data-files]
-"share/wm-ai-coding" = ["skills/development-workflow/workflow.yaml", "skills/registry.yaml"]
+"share/wm-ai-coding" = ["skills/development-workflow/config/workflow.yaml", "skills/registry.yaml"]

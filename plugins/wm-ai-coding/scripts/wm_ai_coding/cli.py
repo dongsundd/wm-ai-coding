@@ -18,7 +18,7 @@ def workflow_path() -> Path:
         candidates.append(Path(configured))
     candidates.extend(
         (
-            Path(__file__).resolve().parents[2] / "skills" / "development-workflow" / "workflow.yaml",
+            Path(__file__).resolve().parents[2] / "skills" / "development-workflow" / "config" / "workflow.yaml",
             Path(sys.prefix) / "share" / "wm-ai-coding" / "workflow.yaml",
         )
     )

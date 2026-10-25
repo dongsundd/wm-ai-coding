@@ -30,7 +30,7 @@ Read only the references relevant to the detected project:
 - typing and generic patterns: [references/typing-patterns.md](references/typing-patterns.md)
 - exception and boundary handling: [references/error-handling-patterns.md](references/error-handling-patterns.md)
 - Pydantic patterns, only when the repository uses Pydantic: [references/pydantic-patterns.md](references/pydantic-patterns.md)
-- Google-style Pylint defaults, only when compatible with repository linting: [references/pylintrc](references/pylintrc)
+- Google-style Pylint defaults, only when compatible with repository linting: [config/pylintrc](config/pylintrc)
 
 Do not introduce Pydantic, Marshmallow, Requests, an ORM, or a particular style tool merely because a reference demonstrates it.
 
