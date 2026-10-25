@@ -18,3 +18,6 @@ __pycache__/
 /.playwright-mcp
 /sdd
 /research
+/plugins/wm-ai-coding/dist
+/plugins/wm-ai-coding/.venv
+/sdd
