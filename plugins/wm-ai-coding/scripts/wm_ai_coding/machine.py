@@ -7,11 +7,11 @@ from uuid import uuid4
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .evidence import artifact_tree_digest, inspect_change, ready_tasks, tree_digest
+from .evidence import artifact_tree_digest, inspect_change, ready_tasks, tree_digest, digest, has_content
 from .store import StateStore
 from .workflow import Workflow
 from .runs import run_check, verification_findings, task_acceptance, workspace_files, inputs, load_plan
-from .registry import role_for
+from .registry import role_for, canonical_skill
 from .archives import integrity_for, export_evidence, write_manifest
 from .specs import read_tree, expected_specs, validate_sync
 from .reviews import review_findings, verification_summary
@@ -363,6 +363,9 @@ class StateMachine:
             raise MachineError("missing gates: " + ", ".join(missing))
         if not evidence["task_contract_valid"] or any(not t.get("checks") for t in evidence["task_states"]):
             raise MachineError("tasks.md does not satisfy the task contract; each task needs - Check: identifiers")
+        if ("test-design" in self.workflow.states["specify"].required_skills
+                and not has_content(self._change_path(name) / "test-design.md")):
+            raise MachineError("test-design.md is missing; rewind to specify and complete test design before baselining")
         try:
             checks = load_plan(self._change_path(name))
             for task in evidence["task_states"]:
@@ -528,8 +531,9 @@ class StateMachine:
             if missing:
                 raise MachineError("missing gates: " + ", ".join(missing))
         if (not handoff or handoff.get("stage") != item["stage"] or handoff.get("task") != item.get("current_task")
-                or handoff.get("kind") in {"support", "profile"}):
+                or handoff.get("kind") != "stage" or handoff.get("skill") != current.skill):
             raise MachineError("current stage/task needs a completed matching handoff")
+        self._require_support(item, handoff)
         if current.repeat == "per_task":
             return self._advance_apply(state, revision, item, current, evidence)
         missing = [gate for gate in current.exit_gates if not self._gate(gate, item, evidence)]
@@ -610,6 +614,44 @@ class StateMachine:
         except ValueError as exc:
             raise MachineError(str(exc)) from exc
 
+    def _required_support(self, item: dict) -> list[str]:
+        skills = list(self.workflow.states[item["stage"]].required_skills)
+        if item["stage"] == "specify" and item.get("conditions", {}).get("frontend_surface_changed") is True:
+            position = skills.index("test-design") if "test-design" in skills else len(skills)
+            skills.insert(position, "frontend-design")
+        return skills
+
+    def _support_fingerprint(self, item: dict, skill: str) -> str:
+        path = self._change_path(item["name"])
+        if skill == "technical-design":
+            body = (path / "design.md").read_text(encoding="utf-8") if (path / "design.md").is_file() else ""
+            # The conditional frontend writer owns this section after structural design.
+            body = re.sub(r"(?ms)^## Frontend design\s*\n.*?(?=^## |\Z)", "", body).strip()
+            return fingerprint({"proposal": digest(path / "proposal.md"),
+                                "specs": tree_digest(path / "specs"), "design": body})
+        if skill == "frontend-design":
+            body = (path / "design.md").read_text(encoding="utf-8")
+            section = re.search(r"(?ms)^## Frontend design\s*\n.*?(?=^## |\Z)", body)
+            return fingerprint({"technical": self._support_fingerprint(item, "technical-design"),
+                                "frontend": section.group(0).strip() if section else None})
+        if skill in {"test-execution", "code-review"}:
+            value = inputs(self.repo, path)
+            if skill == "code-review":
+                value["review"] = digest(path / "review.json")
+            return fingerprint(value)
+        return inspect_change(path)["planning_digest"]
+
+    def _require_support(self, item: dict, parent: dict, *, before: str | None = None) -> None:
+        required = self._required_support(item)
+        if before is not None:
+            required = required[:required.index(before)]
+        for skill in required:
+            records = [h for h in item.get("handoff_history", [])
+                       if h.get("parent_id") == parent["id"] and h.get("skill") == skill
+                       and h.get("status") == "completed"]
+            if not records or records[-1].get("support_fingerprint") != self._support_fingerprint(item, skill):
+                raise MachineError(f"required support missing or stale: {skill}")
+
     def handoff(self, change: str | None, *, scope: list[str], skill: str | None = None, parent_id: str | None = None) -> dict:
         state = self._read()
         name = self._select_change(state, change)
@@ -636,20 +678,29 @@ class StateMachine:
         current = self.workflow.states[item["stage"]]
         allowed = [current.skill] + [conditional.skill for conditional in current.conditional_skills
                                    if item.get("conditions", {}).get(conditional.when) is True]
-        selected = skill or current.skill
+        selected = canonical_skill(self.workflow, skill or current.skill, item["stage"])
         role = role_for(self.workflow, selected, item["stage"])
+        conditional = {c.skill: c.when for c in current.conditional_skills}
+        if selected in conditional and item.get("conditions", {}).get(conditional[selected]) is not True:
+            raise MachineError("conditional skill is not enabled for this stage")
         if selected not in allowed and role not in {"support", "profile", "operation"}:
             raise MachineError("skill is not enabled for this stage")
         if role in {"support", "profile"} and not parent_id:
             raise MachineError("support/profile needs an active parent handoff")
         if parent_id and role not in {"support", "profile"}:
             raise MachineError("only support/profile may nest inside a stage")
-        handoff = {"id": uuid4().hex, "controller": "using-wm", "change": name,
-                   "stage": item["stage"], "skill": skill or current.skill, "task": item.get("current_task"),
+        if selected in self._required_support(item):
+            if not previous or previous.get("skill") != current.skill or previous.get("kind") != "stage":
+                raise MachineError("required support needs the active primary stage parent")
+            self._require_support(item, previous, before=selected)
+        handoff = {"id": uuid4().hex, "controller": "development-workflow", "change": name,
+                   "stage": item["stage"], "skill": selected, "requested_skill": skill or current.skill, "task": item.get("current_task"),
                    "scope": scope, "inputs": evidence, "status": "running", "started_at": now(),
-                   "instruction": "Perform only this scope and return control to using-wm."}
+                   "instruction": "Perform only this scope and return control to development-workflow."}
         handoff.update(kind=role, parent_id=parent_id, trace_id=uuid4().hex,
                        workspace_id=str(self.repo), files_before=workspace_files(self.repo, process=True))
+        if role == "stage" and selected == current.skill:
+            handoff["required_skills"] = self._required_support(item)
         if parent_id:
             item.setdefault("handoff_stack", []).append(previous)
         item["last_handoff"] = handoff
@@ -682,8 +733,26 @@ class StateMachine:
                 raise MachineError("handoff missing gates: " + ", ".join(missing))
             if handoff["skill"] == "frontend-design" and not evidence["frontend_design"]:
                 raise MachineError("frontend design handoff is incomplete")
+            if handoff.get("skill") == "technical-design" and not all(evidence[k] for k in ("design", "structural_analysis", "specs")):
+                raise MachineError("technical design artifacts are incomplete")
+            if handoff.get("skill") == "test-design" and not has_content(self._change_path(name) / "test-design.md"):
+                raise MachineError("test-design.md is missing or empty")
+            if handoff.get("skill") == "test-execution" and item["stage"] == "verify":
+                if findings := verification_findings(self.repo, self._change_path(name)):
+                    raise MachineError("test execution evidence: " + "; ".join(findings))
+            if handoff.get("skill") == "code-review":
+                if findings := review_findings(self.repo, self._change_path(name), item["conditions"].get("frontend_surface_changed") is True):
+                    raise MachineError("code review evidence: " + "; ".join(findings))
+            if handoff.get("skill") in self._required_support(item):
+                parent = item["handoff_stack"][-1]
+                self._require_support(item, parent, before=handoff["skill"])
+                handoff["support_fingerprint"] = self._support_fingerprint(item, handoff["skill"])
+            elif handoff.get("kind") == "stage" and handoff["skill"] == self.workflow.states[item["stage"]].skill:
+                self._require_support(item, handoff)
             if handoff.get("kind") in {"support", "profile"}:
                 pass
+            elif handoff.get("kind") == "operation":
+                pass  # Operations cannot create task receipts or replace the primary stage.
             elif item["stage"] == "apply":
                 task = next((task for task in evidence["task_states"]
                              if item.get("current_task") and task["title"] == item["current_task"]["title"]), None)
@@ -759,7 +828,7 @@ class StateMachine:
             raise MachineError("archive requires a ready archive stage")
         handoff = item.get("last_handoff")
         if (not handoff or handoff["status"] not in {"running", "completed"} or handoff["stage"] != "archive"
-                or handoff.get("skill") not in {"openspec-archive-change", "openspec-bulk-archive-change"}):
+                or canonical_skill(self.workflow, handoff.get("skill", "")) != "change-archive"):
             raise MachineError("archive requires a completed or current archive handoff")
         source = self._change_path(name)
         intent = item.get("archive_intent")
@@ -795,9 +864,12 @@ class StateMachine:
             source.rename(target)
         elif not target.is_dir() or artifact_tree_digest(target) != intent["source_digest"]:
             raise MachineError("archive intent cannot be recovered: destination differs")
-        missing = self._missing_gates(item, inspect_change(target))
-        if missing:
-            raise MachineError("archive recovery missing gates: " + ", ".join(missing))
+        # The live gates were checked before the intent and before movement.
+        # Declared change-local artifacts now live at target, not their old paths.
+        # Recovery validates the pinned portable snapshot rather than replaying
+        # live checks against a directory that intentionally no longer exists.
+        if artifact_tree_digest(target) != intent["source_digest"]:
+            raise MachineError("archive intent cannot be recovered: destination differs")
         handoff = item.get("last_handoff")
         if handoff and handoff["status"] == "running":
             if handoff["stage"] != "archive":

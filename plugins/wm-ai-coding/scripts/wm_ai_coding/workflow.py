@@ -27,6 +27,7 @@ class WorkflowState:
     terminal: bool = False
     repeat: str | None = None
     conditional_skills: tuple[ConditionalSkill, ...] = ()
+    required_skills: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -76,6 +77,10 @@ def load_workflow(path: Path) -> Workflow:
         next_name = config.get("next")
         exit_gates = config.get("exit_gates", [])
         conditional_data = config.get("conditional_skills", [])
+        required_data = config.get("required_skills", [])
+        if (not isinstance(required_data, list) or not all(isinstance(s, str) and s for s in required_data)
+                or len(required_data) != len(set(required_data))):
+            raise WorkflowError(f"state {name} has invalid required skills")
         if not isinstance(skill, str) or not skill.strip():
             raise WorkflowError(f"state {name} has no skill")
         if next_name is not None and not isinstance(next_name, str):
@@ -99,6 +104,7 @@ def load_workflow(path: Path) -> Workflow:
             terminal=bool(config.get("terminal", False)),
             repeat=config.get("repeat"),
             conditional_skills=tuple(conditional_skills),
+            required_skills=tuple(required_data),
         )
         if config.get("repeat") not in (None, "per_task"):
             raise WorkflowError(f"unsupported repeat mode in {name}")
@@ -122,11 +128,17 @@ def load_workflow(path: Path) -> Workflow:
     if not registry.is_file():
         registry = path.parent / "registry.yaml"
     if registry.is_file():
-        registered = yaml.safe_load(registry.read_text(encoding="utf-8"))["skills"]
+        registry_data = yaml.safe_load(registry.read_text(encoding="utf-8"))
+        registered = registry_data["skills"]
+        from .registry import alias_findings
+        if findings := alias_findings(registered, registry_data.get("aliases", {}), registry_data.get("stage_aliases", {})):
+            raise WorkflowError("; ".join(findings))
         for name, state in states.items():
-            for skill in [state.skill] + [c.skill for c in state.conditional_skills]:
+            for skill in [state.skill] + [c.skill for c in state.conditional_skills] + list(state.required_skills):
                 if skill not in registered or name not in registered[skill].get("stages", []):
                     raise WorkflowError(f"unregistered stage skill: {skill}")
+                if skill in state.required_skills and registered[skill].get("role") != "support":
+                    raise WorkflowError(f"required skill must be support: {skill}")
     if data.get("protocol_version", 1) not in {1, 2}:
         raise WorkflowError("unsupported protocol version")
     return Workflow(

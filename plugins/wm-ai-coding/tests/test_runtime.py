@@ -47,6 +47,8 @@ def write_change(repo: Path, name: str = "c1", task_count: int = 2) -> Path:
         "- Impact: bounded to the existing path\n",
         encoding="utf-8",
     )
+    (change / "test-design.md").write_text(
+        "# Test design\n\nR1 / success: exercise accepted behavior; expect success.\n", encoding="utf-8")
     tasks = "# Tasks\n\n" + "".join(
         TASKS_TEMPLATE.format(index=index, title=f"Deliver outcome {index}")
         for index in range(1, task_count + 1)
@@ -73,7 +75,7 @@ def complete_task(tasks_path: Path, index: int, task_count: int = 2) -> None:
 
 
 def machine_for(repo: Path) -> StateMachine:
-    return StateMachine(repo, load_workflow(PLUGIN_ROOT / "skills" / "using-wm" / "workflow.yaml"))
+    return StateMachine(repo, load_workflow(PLUGIN_ROOT / "skills" / "development-workflow" / "workflow.yaml"))
 
 
 def advance_stage(machine):
@@ -81,8 +83,21 @@ def advance_stage(machine):
     handoff=packet.get("handoff")
     if not handoff or handoff.get("status") != "running" or handoff.get("stage") != packet["stage"]:
         handoff=machine.handoff(None,scope=["sdd"])
+    complete_supports(machine, handoff)
     machine.finish_handoff(None,handoff["id"],"completed",[f"sdd/changes/{packet['change']}/design.md"])
     return machine.advance()
+
+
+def complete_supports(machine, handoff):
+    """Fixtures perform real child handoffs rather than bypassing support evidence."""
+    packet = machine.recovery()
+    steps = {'specify': [('technical-design', 'design.md'), ('test-design', 'test-design.md')],
+             'verify': [('test-execution', 'verification.md'), ('code-review', 'review.json')]}.get(packet['stage'], [])
+    if packet['stage'] == 'specify' and packet['conditions'].get('frontend_surface_changed') is True:
+        steps.insert(1, ('frontend-design', 'design.md'))
+    for skill, output in steps:
+        child = machine.handoff(None, scope=handoff['scope'], skill=skill, parent_id=handoff['id'])
+        machine.finish_handoff(None, child['id'], 'completed', [f"sdd/changes/{packet['change']}/{output}"])
 
 
 def accept_task(machine, change, index):
@@ -362,10 +377,10 @@ class LockTest(unittest.TestCase):
 
 class WorkflowShapeTest(unittest.TestCase):
     def test_close_syncs_before_archive(self) -> None:
-        workflow = load_workflow(PLUGIN_ROOT / "skills" / "using-wm" / "workflow.yaml")
-        self.assertEqual("openspec-sync-specs", workflow.states["close"].skill)
+        workflow = load_workflow(PLUGIN_ROOT / "skills" / "development-workflow" / "workflow.yaml")
+        self.assertEqual("specification-sync", workflow.states["close"].skill)
         self.assertEqual("archive", workflow.states["close"].next)
-        self.assertEqual("openspec-archive-change", workflow.states["archive"].skill)
+        self.assertEqual("change-archive", workflow.states["archive"].skill)
         self.assertTrue(workflow.states["archive"].terminal)
 
     def test_close_requires_synced_specs_snapshot(self) -> None:

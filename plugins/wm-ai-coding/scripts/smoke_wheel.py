@@ -29,7 +29,7 @@ from wm_ai_coding.workflow import load_workflow
 from wm_ai_coding.registry import role_for
 assert Path(wm_ai_coding.__file__).resolve().is_relative_to(Path(sys.prefix).resolve())
 workflow=load_workflow(workflow_path())
-assert role_for(workflow,'python-ai-coding','apply') == 'profile'
+assert role_for(workflow,'python-development','apply') == 'profile'
 assert main(['--repo',str(Path.cwd()),'init','--no-gitignore']) == 0
 assert main(['--repo',str(Path.cwd()),'status']) == 0
 '''

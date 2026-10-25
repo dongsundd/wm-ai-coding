@@ -5,7 +5,7 @@ import hashlib
 import json
 from pathlib import Path
 
-VERSION = "0.8.0"
+VERSION = "0.9.1"
 PROTOCOL_VERSION = 2
 
 

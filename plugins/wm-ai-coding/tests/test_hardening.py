@@ -7,7 +7,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from test_runtime import advance_to_apply, complete_task, machine_for, write_change, advance_stage, accept_task
+from test_runtime import advance_to_apply, complete_task, machine_for, write_change, advance_stage, accept_task, complete_supports
 from wm_ai_coding.machine import MachineError
 
 
@@ -30,6 +30,7 @@ def verified(repo: Path, frontend_text: str = ""):
     record_review(repo,change,reviewer="fixture-review",mode="self",findings=[])
     (change/"verification.json").write_text(json.dumps({"schema_version":1,"status":"passed","coverage":{
         "capability::R1":[record["id"]],"capability::R1::success":[record["id"]]}}))
+    complete_supports(machine,handoff)
     machine.finish_handoff(None,handoff["id"],"completed",["sdd/changes/c1/verification.md"])
     return machine,change
 

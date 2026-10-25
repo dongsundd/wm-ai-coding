@@ -18,14 +18,14 @@ def workflow_path() -> Path:
         candidates.append(Path(configured))
     candidates.extend(
         (
-            Path(__file__).resolve().parents[2] / "skills" / "using-wm" / "workflow.yaml",
+            Path(__file__).resolve().parents[2] / "skills" / "development-workflow" / "workflow.yaml",
             Path(sys.prefix) / "share" / "wm-ai-coding" / "workflow.yaml",
         )
     )
     for candidate in candidates:
         if candidate.is_file():
             return candidate
-    raise WorkflowError("using-wm workflow.yaml was not found")
+    raise WorkflowError("development-workflow workflow.yaml was not found")
 
 
 def parser() -> argparse.ArgumentParser:

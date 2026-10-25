@@ -1,11 +1,11 @@
 ---
 name: test-driven-development
-description: Use only when `using-wm` selects implementation of a behavior-changing OpenSpec task.
+description: Use only when `development-workflow` selects implementation of a behavior-changing OpenSpec task.
 ---
 
 ## Harness entry contract
 
-Execute only from a `using-wm` handoff that names one valid task and its acceptance command. A direct user request must enter `using-wm`. Complete only that task's RED-GREEN-REFACTOR loop, then return control to `using-wm`.
+Execute only from a `development-workflow` handoff that names one valid task and its acceptance command. A direct user request must enter `development-workflow`. Complete only that task's RED-GREEN-REFACTOR loop, then return control to `development-workflow`.
 
 # Test-Driven Development (TDD)
 

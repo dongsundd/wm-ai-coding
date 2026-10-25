@@ -13,14 +13,14 @@ from .registry import validate_registry
 def brief(machine, change=None, *, limit=2048) -> dict:
     state = machine.status(); name = change or state.get("active_change")
     if not name or name not in state["changes"]:
-        return {"controller": "using-wm", "next": "select or create a change"}
+        return {"controller": "development-workflow", "next": "select or create a change"}
     item = state["changes"][name]
-    result = {"controller": "using-wm", "change": name[:120], "stage": item["stage"], "status": item["status"],
+    result = {"controller": "development-workflow", "change": name[:120], "stage": item["stage"], "status": item["status"],
               "task": (item.get("current_task") or {}).get("id"), "missing_gates": item.get("missing_gates", [])[:12],
               "handoff": (item.get("last_handoff") or {}).get("id"),
               "next": "wm recovery --change " + name[:120], "integrity": (item.get("integrity") or {}).get("status")}
     if len(json.dumps(result).encode()) > limit:
-        return {"controller": "using-wm", "next": "wm recovery (brief exceeds budget)"}
+        return {"controller": "development-workflow", "next": "wm recovery (brief exceeds budget)"}
     return result
 
 

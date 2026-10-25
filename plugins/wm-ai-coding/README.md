@@ -13,11 +13,20 @@ Install the global CodeGraph and Playwright MCP executables separately; run
 configuration uses a platform-neutral executable resolver and never installs
 dependencies implicitly.
 
-Ask the host to use `using-wm`. Start a repository with
+Ask the host to use `development-workflow`. Start a repository with
 `wm --repo <repo> init --no-gitignore`, then inspect `status`, `brief` and `doctor`.
 Only opt into managed Git-index maintenance when repository policy permits it.
-Read [the runtime protocol](skills/using-wm/references/runtime.md) for the full
+Read [the runtime protocol](skills/development-workflow/references/runtime.md) for the full
 planning, task, review, specification-sync and archive contracts.
+
+Version 0.9.1 organizes [24 skills by development activity](skills/README.md):
+requirements research and analysis, specification, technical/frontend/test design,
+planning, implementation, tests, review, local commits, specification sync and archive.
+The seven runtime states remain stable. Required design and verification supports
+have ordered, current handoff evidence. Old WM handoff names normalize through
+registry aliases; host skill discovery and filesystem paths use the new names.
+Run `wm migrate` after upgrading and rebaseline active tasks; historical archives
+are not rewritten. Test design is required before implementation.
 
 ## Releases and hosts
 

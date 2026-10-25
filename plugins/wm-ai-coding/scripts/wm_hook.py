@@ -20,7 +20,7 @@ def main():
         repo = next((p for p in (cwd, *cwd.parents) if (p / ".wm/state.json").is_file()), None)
         if repo is None:
             result = {"hookSpecificOutput": {"hookEventName": event, "additionalContext":
-                "WM: development work enters using-wm; initialize explicitly with wm init --no-gitignore."}} if event in {"SessionStart", "UserPromptSubmit"} else {}
+                "WM: development work enters development-workflow; initialize explicitly with wm init --no-gitignore."}} if event in {"SessionStart", "UserPromptSubmit"} else {}
         else:
             result = handle_hook(StateMachine(repo, load_workflow(workflow_path())), host, event, payload)
     except Exception as exc:

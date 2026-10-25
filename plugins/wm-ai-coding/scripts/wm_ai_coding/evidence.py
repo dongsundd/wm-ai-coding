@@ -143,6 +143,8 @@ def inspect_change(change: Path) -> dict:
     findings = task_contract(tasks_body) if tasks.is_file() else ["tasks.md is missing"]
     planning = {"proposal": digest(change / "proposal.md"), "specs": tree_digest(change / "specs"),
                 "design": digest(design)}
+    if (change / "test-design.md").is_file():
+        planning["test_design"] = digest(change / "test-design.md")
     return {
         "proposal": has_content(change / "proposal.md"),
         "specs": any(has_content(path) for path in specs),

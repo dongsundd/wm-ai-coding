@@ -33,7 +33,7 @@ def handle_hook(machine, host: str, event: str, payload: dict) -> dict:
     name = payload.get("change") or state.get("active_change")
     item = state.get("changes", {}).get(name)
     if event in {"SessionStart", "UserPromptSubmit", "PreCompact", "PostCompact", "session-start"}:
-        content = json.dumps(brief(machine, name), ensure_ascii=False) if item else "WM: no active change; development requests enter using-wm."
+        content = json.dumps(brief(machine, name), ensure_ascii=False) if item else "WM: no active change; development requests enter development-workflow."
         if host == "dsh":
             return {"context": content}
         return {"hookSpecificOutput": {"hookEventName": event, "additionalContext": content}}
@@ -82,7 +82,7 @@ def handle_hook(machine, host: str, event: str, payload: dict) -> dict:
         controller = (words and Path(words[0]).name.lower() in {"wm", "wm.exe"})
         if len(words) > 1 and Path(words[0]).name.lower() in {"python", "python3", "python.exe"}:
             wrapper = Path(words[1]).resolve()
-            expected = Path(__file__).resolve().parents[2] / "skills/using-wm/scripts/harness_state.py"
+            expected = Path(__file__).resolve().parents[2] / "skills/development-workflow/scripts/harness_state.py"
             controller = wrapper == expected.resolve()
         if controller:
             return decision(host, True, "WM controller enforces its own gates; host permissions still apply")

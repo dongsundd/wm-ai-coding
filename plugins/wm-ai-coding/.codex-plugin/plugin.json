@@ -1,15 +1,15 @@
 {
   "name": "wm-ai-coding",
-  "version": "0.8.0",
-  "description": "以 OpenSpec 为核心，集成 CodeGraph、头脑风暴与可验证交付的端到端 AI Coding Harness",
+  "version": "0.9.1",
+  "description": "按研发流程组织需求、设计、开发、测试、评审与交付的 AI Coding Harness",
   "author": {
     "name": "WM AI Coding"
   },
   "skills": "./skills/",
   "interface": {
     "displayName": "WM AI Coding Harness",
-    "shortDescription": "OpenSpec 驱动的端到端研发工作流",
-    "longDescription": "通过 using-wm 单一入口编排独立技能，以 OpenSpec 管理需求、设计、任务、实施、验证和归档，并可借助 CodeGraph 辅助设计与影响分析。",
+    "shortDescription": "需求到验收的可追溯研发工作流",
+    "longDescription": "通过 development-workflow 编排 24 个阶段与支撑技能，区分需求规格、技术设计和测试设计，并以当前测试及评审证据完成验收。",
     "developerName": "WM AI Coding",
     "category": "Developer Tools",
     "capabilities": [
@@ -19,10 +19,10 @@
       "Browser Automation"
     ],
     "defaultPrompt": [
-      "使用 using-wm 完整实施并验证这个需求。",
-      "通过 using-wm 继续当前 OpenSpec 变更。",
-      "使用 using-wm 检查当前变更是否满足交付门禁。",
-      "使用 using-wm 按最小独立验收任务持续执行到验证完成。"
+      "使用 development-workflow 完整实施并验证这个需求。",
+      "通过 development-workflow 继续当前 OpenSpec 变更。",
+      "使用 development-workflow 检查当前变更是否满足交付门禁。",
+      "使用 development-workflow 按最小独立验收任务持续执行到验证完成。"
     ]
   },
   "mcpServers": "./.mcp.json",

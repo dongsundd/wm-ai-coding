@@ -25,8 +25,8 @@ class RouteTests(unittest.TestCase):
             m, c = advance_to_apply(Path(d))
             parent = m.handoff(None, scope=["sdd/changes/c1/tasks.md"])
             with self.assertRaises(MachineError):
-                m.handoff(None, scope=["outside.py"], skill="python-ai-coding", parent_id=parent["id"])
-            child = m.handoff(None, scope=parent["scope"], skill="python-ai-coding", parent_id=parent["id"])
+                m.handoff(None, scope=["outside.py"], skill="python-development", parent_id=parent["id"])
+            child = m.handoff(None, scope=parent["scope"], skill="python-development", parent_id=parent["id"])
             m.finish_handoff(None, child["id"], "completed", ["sdd/changes/c1/tasks.md"])
             self.assertEqual(parent["id"], m.recovery()["handoff"]["id"])
             with self.assertRaises(MachineError):
