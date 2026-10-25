@@ -10,8 +10,8 @@ from pathlib import Path
 PLUGIN_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(PLUGIN_ROOT / "scripts"))
 
-from wm_ai_coding.cli import main
-from wm_ai_coding.evidence import inspect_change
+from wm_ai_coding.entrypoint import main
+from wm_ai_coding.evidence.inspection import inspect_change
 
 
 def inspect(change: Path) -> dict[str, object]:

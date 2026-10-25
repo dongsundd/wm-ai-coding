@@ -1,0 +1,1 @@
+"""Public command adapters."""

@@ -7,9 +7,10 @@ The host supplies the model loop, tool permissions, sandbox and agent sessions.
 
 ## Install and start
 
-Use Python 3.11 or newer and install this directory with `pip install .`.
+Use Python 3.11 or newer. Run `python scripts/wm.py --help` directly, or
+install the optional `wm` command with `pip install ./scripts`.
 Install the global CodeGraph and Playwright MCP executables separately; run
-`python scripts/dependency_preflight.py --json` to inspect availability. MCP
+`python scripts/wm.py preflight --json` to inspect availability. MCP
 configuration uses a platform-neutral executable resolver and never installs
 dependencies implicitly.
 
@@ -18,6 +19,20 @@ Ask the host to use `development-workflow`. Start a repository with
 Only opt into managed Git-index maintenance when repository policy permits it.
 Read [the runtime protocol](skills/development-workflow/references/runtime.md) for the full
 planning, task, review, specification-sync and archive contracts.
+
+`scripts/wm.py` is the shared source entrypoint for workflow, hook, MCP,
+dependency and release commands. Runtime modules live under
+`scripts/wm_ai_coding/{commands,lifecycle,evidence,integrations,infrastructure}`.
+Development tests live under `scripts/tests/{unit,integration,acceptance,support}`;
+shared paths and fixtures belong to `support`, and tests are excluded from wheels.
+Each tool command owns its arguments, process input/output and exit codes;
+`commands/registry.py` registers the real argument definitions and handlers for
+both help and execution. Integration services accept explicit values and return
+data or results, without CLI entrypoints or process stream handling.
+Workflow commands take `--repo` before the subcommand; tool arguments follow
+their command, for example `wm preflight --project <repo> --json`.
+`wm --repo <repo> hook <host> <event>` uses the explicit repository; without
+`--repo`, hook context is discovered from the payload's `cwd`.
 
 Version 0.9.1 organizes [24 skills by development activity](skills/README.md):
 requirements research and analysis, specification, technical/frontend/test design,
@@ -30,9 +45,9 @@ are not rewritten. Test design is required before implementation.
 
 ## Releases and hosts
 
-`python scripts/build_release.py` generates version-aligned portable, Codex and
+`python scripts/wm.py release build` generates version-aligned portable, Codex and
 Claude manifests and seals bundle content. Rebuild after any package change.
-`python scripts/smoke_release.py --mcp` checks the bundle and locally initializes
+`python scripts/wm.py release verify --mcp` checks the bundle and locally initializes
 both MCP servers without running browser actions.
 
 Codex and Claude use separate explicit hook files; there is deliberately no
@@ -44,7 +59,7 @@ live host event activation. No marketplace publication is performed by the build
 
 ## Verification and limits
 
-Run `python -m unittest discover -s tests` from this directory and `wm eval` for
+Run `python -m unittest discover -s scripts/tests -v` from this directory and `wm eval` for
 named deterministic protocol cases. These checks do not measure model routing
 accuracy, token cost or independent-review quality. Review mode explicitly records
 self or host-asserted independent review.

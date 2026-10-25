@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \"${PLUGIN_ROOT}/scripts/wm_hook.py\" codex SessionStart",
+            "command": "python \"${PLUGIN_ROOT}/scripts/wm.py\" hook codex SessionStart",
             "timeout": 10
           }
         ]
@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \"${PLUGIN_ROOT}/scripts/wm_hook.py\" codex UserPromptSubmit",
+            "command": "python \"${PLUGIN_ROOT}/scripts/wm.py\" hook codex UserPromptSubmit",
             "timeout": 10
           }
         ]
@@ -27,7 +27,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \"${PLUGIN_ROOT}/scripts/wm_hook.py\" codex PreToolUse",
+            "command": "python \"${PLUGIN_ROOT}/scripts/wm.py\" hook codex PreToolUse",
             "timeout": 10
           }
         ]
@@ -38,7 +38,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \"${PLUGIN_ROOT}/scripts/wm_hook.py\" codex PostToolUse",
+            "command": "python \"${PLUGIN_ROOT}/scripts/wm.py\" hook codex PostToolUse",
             "timeout": 10
           }
         ]
@@ -49,7 +49,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \"${PLUGIN_ROOT}/scripts/wm_hook.py\" codex Stop",
+            "command": "python \"${PLUGIN_ROOT}/scripts/wm.py\" hook codex Stop",
             "timeout": 10
           }
         ]
@@ -60,7 +60,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \"${PLUGIN_ROOT}/scripts/wm_hook.py\" codex PreCompact",
+            "command": "python \"${PLUGIN_ROOT}/scripts/wm.py\" hook codex PreCompact",
             "timeout": 10
           }
         ]
@@ -71,7 +71,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \"${PLUGIN_ROOT}/scripts/wm_hook.py\" codex PostCompact",
+            "command": "python \"${PLUGIN_ROOT}/scripts/wm.py\" hook codex PostCompact",
             "timeout": 10
           }
         ]
