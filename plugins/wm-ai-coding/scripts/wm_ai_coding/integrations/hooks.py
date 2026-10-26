@@ -11,8 +11,6 @@ from wm_ai_coding.evidence.runs import load_plan
 CAPABILITIES = {
     "codex": {"events": ["SessionStart", "UserPromptSubmit", "PreToolUse", "PostToolUse", "Stop", "PreCompact", "PostCompact"],
               "limits": ["hook trust required", "hosted/specialized tools may bypass hooks", "existing shell sessions are not rechecked"]},
-    "claude": {"events": ["SessionStart", "UserPromptSubmit", "PreToolUse", "PostToolUse", "Stop", "PreCompact"],
-               "limits": ["shell children/external writes need sandbox and return inventory"]},
     "dsh": {"events": ["session-start", "pre-tool-use", "post-tool-use", "stop"],
             "limits": ["bridge requires host plugin integration; no bundled model loop"]},
 }

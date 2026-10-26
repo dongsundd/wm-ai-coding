@@ -20,19 +20,12 @@ def build(root: Path):
                 "version": VERSION, "description": data["description"],
                 "extensions": {"com.openai": {"hooks": "./hooks/codex.json", "interface": data["interface"]}}}
     (root / "plugin.json").write_text(json.dumps(portable, indent=2, ensure_ascii=False)+"\n", encoding="utf-8", newline="\n")
-    claude = root / ".claude-plugin/plugin.json";claude.parent.mkdir(exist_ok=True)
-    claude.write_text(json.dumps({"name": "wm-ai-coding", "version": VERSION, "description": data["description"], "author": data["author"],
-                                 "skills": "./skills/", "hooks": "./hooks/claude.json", "mcpServers": "./.mcp.json"},indent=2,ensure_ascii=False)+"\n",encoding="utf-8", newline="\n")
     hooks = root / "hooks"; hooks.mkdir(exist_ok=True)
-    for host, filename, variable in [("codex","codex.json","PLUGIN_ROOT"),("claude","claude.json","CLAUDE_PLUGIN_ROOT")]:
-        events=["SessionStart","UserPromptSubmit","PreToolUse","PostToolUse","Stop","PreCompact"]
-        if host=="codex":events.append("PostCompact")
-        config={"hooks":{event:[{"hooks":[{"type":"command","command":f'python "${{{variable}}}/scripts/wm.py" hook {host} {event}',"timeout":10}]}] for event in events}}
-        (hooks/filename).write_text(json.dumps(config,indent=2)+"\n",encoding="utf-8", newline="\n")
-    portable_mcp = json.loads((root / ".mcp.json").read_text(encoding="utf-8"))
-    portable_mcp["$schema"] = "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json"
-    for server in portable_mcp["mcpServers"].values(): server["type"] = "stdio"
-    (root / "mcp.json").write_text(json.dumps(portable_mcp, indent=2)+"\n", encoding="utf-8", newline="\n")
+    events=["SessionStart","UserPromptSubmit","PreToolUse","PostToolUse","Stop","PreCompact","PostCompact"]
+    config={"hooks":{event:[{"hooks":[{"type":"command","command":f'python "${{PLUGIN_ROOT}}/scripts/wm.py" hook codex {event}',"timeout":10}]}] for event in events}}
+    (hooks/"codex.json").write_text(json.dumps(config,indent=2)+"\n",encoding="utf-8", newline="\n")
+    for relative in (".claude-plugin/plugin.json", ".mcp.json", "mcp.json", "hooks/claude.json"):
+        (root / relative).unlink(missing_ok=True)
     return seal_bundle(root)
 
 
@@ -41,15 +34,16 @@ def verify(root: Path, *, mcp: bool = False) -> dict:
     release=verify_bundle(root)
     if not release['valid']:findings.append('bundle content differs from release manifest')
     manifests=[json.loads((root/path).read_text(encoding='utf-8')) for path in
-               ('plugin.json','.codex-plugin/plugin.json','.claude-plugin/plugin.json')]
+               ('plugin.json','.codex-plugin/plugin.json')]
     if any(m['version']!=VERSION for m in manifests):findings.append('manifest version mismatch')
     if (root/'hooks/hooks.json').exists():findings.append('ambiguous default hooks would load on multiple hosts')
-    for host in ('codex','claude'):
-        hooks=json.loads((root/f'hooks/{host}.json').read_text(encoding='utf-8'))['hooks']
-        for event,groups in hooks.items():
-            for group in groups:
-                for hook in group['hooks']:
-                    if f'{host} {event}' not in hook['command']:findings.append('hook host/event mismatch')
+    for relative in ('.claude-plugin/plugin.json','.mcp.json','mcp.json','hooks/claude.json'):
+        if (root/relative).exists():findings.append(f'removed Claude adapter artifact remains: {relative}')
+    hooks=json.loads((root/'hooks/codex.json').read_text(encoding='utf-8'))['hooks']
+    for event,groups in hooks.items():
+        for group in groups:
+            for hook in group['hooks']:
+                if f'codex {event}' not in hook['command']:findings.append('hook host/event mismatch')
     handshakes={}
     if mcp:
         for name,args in [('codegraph',['serve','--mcp']),('playwright-mcp',['--isolated','--headless','--codegen=none','--block-service-workers'])]:

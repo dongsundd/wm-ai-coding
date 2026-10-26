@@ -164,7 +164,7 @@ class HookTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             m, _ = advance_to_apply(Path(d)); m.handoff(None, scope=["allowed.py"])
             event = {"tool_name": "Write", "tool_input": {"file_path": str(Path(d)/"bad.py")}}
-            for host in ("codex", "claude"):
+            for host in ("codex",):
                 result = handle_hook(m, host, "PreToolUse", event)
                 self.assertEqual("deny", result["hookSpecificOutput"]["permissionDecision"])
 
