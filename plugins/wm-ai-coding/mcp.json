@@ -3,7 +3,7 @@
     "codegraph": {
       "command": "python",
       "args": [
-        "${PLUGIN_ROOT}/scripts/wm.py",
+        "${CLAUDE_PLUGIN_ROOT}/scripts/wm.py",
         "mcp",
         "codegraph",
         "serve",
@@ -17,7 +17,7 @@
     "playwright": {
       "command": "python",
       "args": [
-        "${PLUGIN_ROOT}/scripts/wm.py",
+        "${CLAUDE_PLUGIN_ROOT}/scripts/wm.py",
         "mcp",
         "playwright-mcp",
         "--isolated",

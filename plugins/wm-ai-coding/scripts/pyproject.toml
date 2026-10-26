@@ -21,4 +21,4 @@ include = ["wm_ai_coding*"]
 exclude = ["tests", "tests.*"]
 
 [tool.setuptools.data-files]
-"share/wm-ai-coding" = ["../skills/development-workflow/config/workflow.yaml", "../skills/registry.yaml", "../skills/development-workflow/references/bootstrap.md"]
+"share/wm-ai-coding" = ["../skills/development-workflow/config/workflow.yaml", "../skills/registry.yaml"]
