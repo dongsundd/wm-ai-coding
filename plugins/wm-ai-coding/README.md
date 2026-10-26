@@ -45,6 +45,38 @@ are not rewritten. Test design is required before implementation.
 
 ## Releases and hosts
 
+Host adapters share the startup contract and fresh WM brief. Claude uses native
+command hooks; OpenCode v2 uses the directory plugin at
+`.opencode/plugins/wm-ai-coding` (`id`/`setup`, skills, MCP and session/tool hooks).
+OpenCode v1 is not supported. Add the installed **directory** to `plugins` in a
+project `opencode.json`, for example `{"plugins":["D:/plugins/wm-ai-coding/.opencode/plugins/wm-ai-coding"]}`.
+Keep the whole bundle at that installation path; do not copy only the JS file.
+Set the OpenCode plugin's `python` option or `WM_PYTHON` if Python is not on PATH.
+Python 3.11+, PyYAML, CodeGraph and Playwright MCP executables must be available
+in the host execution environment. Run `wm preflight` to diagnose dependencies.
+
+Claude can load a local installed bundle with `claude --plugin-dir <bundle>`;
+review/trust plugin hooks through the host's supported flow. Codex uses its
+marketplace/plugin mechanism. No installer here edits personal/global config.
+`metadata.json` owns shared release metadata. `.mcp.json` is Claude-specific;
+`.codex.mcp.json` uses a plugin-relative working directory and script path;
+portable `mcp.json` uses `${PLUGIN_ROOT}` expansion. OpenCode
+registers MCP servers through native transforms with resolved installed paths.
+
+Build the shared source, then produce a native installation bundle with
+`python scripts/wm.py release package --host codex --output <new-directory>`
+(also supports `claude` and `opencode`). Codex 0.164 selects the compatibility
+manifest only when the native bundle omits root `plugin.json`; otherwise that
+portable manifest shadows hook discovery. Install the emitted Codex directory,
+not the shared source checkout. Each native bundle is sealed independently and
+records its shared-source digest in `distribution.json`.
+
+Allowed Claude operations defer to the normal host permission flow; WM denials
+remain explicit. Claude restores context through SessionStart (including compact),
+not PreCompact output. Stop does not infer completion intent from conversational
+text; explicit WM gates remain authoritative and pausing is legal. Hooks are
+guardrails and do not isolate every subprocess, external write or MCP side effect.
+
 `python scripts/wm.py release build` generates version-aligned portable, Codex and
 Claude manifests and seals bundle content. Rebuild after any package change.
 `python scripts/wm.py release verify --mcp` checks the bundle and locally initializes

@@ -65,6 +65,17 @@
           }
         ]
       }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"${CLAUDE_PLUGIN_ROOT}/scripts/wm.py\" hook claude SubagentStart",
+            "timeout": 10
+          }
+        ]
+      }
     ]
   }
 }

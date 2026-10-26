@@ -76,6 +76,17 @@
           }
         ]
       }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"${PLUGIN_ROOT}/scripts/wm.py\" hook codex SubagentStart",
+            "timeout": 10
+          }
+        ]
+      }
     ]
   }
 }
